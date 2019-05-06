@@ -1,3 +1,0 @@
-# Winston test: changed this
-
-# another test: testing 2
