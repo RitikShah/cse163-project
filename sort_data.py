@@ -1,9 +1,10 @@
 # This file preporcess the whole dataset and store them in a json file
 import pandas as pd
 import json
+import os
 
-with open('data.json') as js:
-    if len(js.read()) == 0:
+with open('data.json', 'w') as js_file:
+    if os.stat('data.json').st_size == 0:
         df = pd.read_csv('freecodecamp_casual_chatroom.csv')
         df_filtered = df[['fromUser.displayName', 'text']]
         rank = df_filtered.groupby(['fromUser.displayName']).count()
@@ -22,16 +23,14 @@ with open('data.json') as js:
         contain columns
         """
         js = df.to_json(orient='records')
-        with open('data.json', 'w') as outfile:
-            json.dump(js, outfile)
+        json.dump(js, js_file)
         """
         this part convert filtered dataframe into json object and save json
         object into json file
         """
-    with open('data.json') as f:
-        data = json.load(f)
-        df = pd.read_json(data, orient='records')
-        print(df)
-        """
-        use json file to get the dataframe and print it out
-        """
+    data = json.load(js_file)
+    df = pd.read_json(data, orient='records')
+    print(df)
+    """
+    use json file to get the dataframe and print it out
+    """
