@@ -3,12 +3,16 @@ import pandas as pd
 import json
 import os
 
-with open('data.json', 'w') as js_file:
-    if os.stat('data.json').st_size == 0:
-        df = pd.read_csv('freecodecamp_casual_chatroom.csv')
+# Some constants for the file names
+IN_FILE = 'freecodecamp_casual_chatroom.csv'
+OUT_FILE = 'data.json'
+
+with open(OUT_FILE, 'w') as js_file:
+    if os.stat(OUT_FILE).st_size == 0:
+        df = pd.read_csv(IN_FILE)
         df_filtered = df[['fromUser.displayName', 'text']]
         rank = df_filtered.groupby(['fromUser.displayName']).count()
-        rank = rank[rank['text'] > 10000]
+        rank = rank[rank['text'] > 10000]  # Only people w/ more than 1000 msgs
         rank = rank.sort_values(ascending=False, by='text')
         name_list = rank.index.tolist()
         df = df[df['fromUser.displayName'].isin(name_list)]
