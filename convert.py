@@ -9,7 +9,8 @@ dataframe with messages from users in that list, and dataframe only
 contain columns:'fromUser.displayName', 'fromUser.id', 'mentions',
 'readBy', 'sent', 'text'
 """
-df = pd.read_csv('freecodecamp_casual_chatroom.csv')
+df = pd.read_csv('freecodecamp_casual_chatroom.csv', na_values=None)
+df = df.dropna(subset=['text'])
 df_filtered = df[['fromUser.displayName', 'text']]
 rank = df_filtered.groupby(['fromUser.displayName']).count()
 rank = rank[rank['text'] > 10000]
