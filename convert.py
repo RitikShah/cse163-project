@@ -28,6 +28,5 @@ print(df)
 this part convert filtered dataframe into json object and save json
 object into json file
 """
-with open('data.json', 'w') as js_file:
-    js = df.to_json(orient='records')
-    json.dump(js, js_file)
+js = df.to_json(orient='records')
+json.dumps(js, js_file)

@@ -4,4 +4,6 @@ __pycache__
 *.sublime-workspace
 *.csv
 data.json
+*.zip
 Git tutorial.docx
+convert.py
