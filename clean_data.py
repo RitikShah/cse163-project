@@ -24,11 +24,12 @@ def clean1(file):
                 'fromUser.id',
                 'mentions',
                 'urls',
-                'readBy', 
+                'readBy',
                 'editedAt',
                 'id',
                 'text'
             ]]
+    df = df.loc[0:1000, :]
     df.to_pickle('corpus.pkl')
     df['text'] = df['text'].apply(clean_sentence)
     df.to_pickle('clean_data.pkl')
@@ -63,18 +64,24 @@ def sub(x):
     return TextBlob(x).sentiment.subjectivity
 
 
-def get_features(pickle):
-    df = pd.read_pickle(pickle)
-    df['polarity'] = df['text'].apply(pol)
-    df['subjectivity'] = df['text'].apply(sub)
-
-    df.to_pickle('featured_data.pkl')
+def get_features(clean_pickle, og_pickel):
+    df = pd.read_pickle(og_pickel)
+    features_df = pd.read_pickle(clean_pickle)
+    # sentiment features
+    features_df['polarity'] = df['text'].apply(pol)
+    features_df['subjectivity'] = df['text'].apply(sub)
+    # word count
+    features_df['wordCount'] = df['text'].str.split().apply(len)
+    # average word length
+    features_df['ave_word_length'] = df['text'].str.replace(" ", ''). \
+        apply(len) / features_df['wordCount']
+    features_df.to_pickle('featured_data.pkl')
 
 
 def main():
     clean1('Data/freecodecamp_casual_chatroom.csv')
     # remove_common_words('clean_data.pkl')
-    get_features('clean_data.pkl')
+    get_features('clean_data.pkl', 'corpus.pkl')
 
 
 if __name__ == '__main__':
