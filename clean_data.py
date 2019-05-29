@@ -2,12 +2,10 @@ import pandas as pd
 import re
 import string
 from sklearn.feature_extraction.text import CountVectorizer
-from textblob import TextBlob
 from gensim import matutils, models
 from feature import get_features
 import scipy.sparse
 import pickle
-import nltk
 
 DATA_FILE = 'data/freecodecamp_casual_chatroom.csv'
 DEBUG = False

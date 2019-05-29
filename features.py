@@ -23,7 +23,7 @@ def avg_word_length(df):
         df['text_clean'].str.replace(' ', '').apply(len) / df['word_count']
 
 
-def adj_ratio(sentence):
+def adj_ratio(df):
     word_list = sentence.split()
     if len(word_list) == 0:
         return 0
@@ -35,7 +35,7 @@ def adj_ratio(sentence):
     return adj_count / len(tagged_list)
 
 
-def verb_ratio(sentence):
+def verb_ratio(df):
     word_list = sentence.split()
     if len(word_list) == 0:
         return 0
@@ -48,7 +48,7 @@ def verb_ratio(sentence):
     return verb_count / len(tagged_list)
 
 
-def noun_ratio(sentence):
+def noun_ratio(df):
     data.to_pickle('data.pkl')  # pickle for future usage
     if len(word_list) == 0:
         return 0
