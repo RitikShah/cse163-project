@@ -1,21 +1,15 @@
 from sklearn.feature_extraction.text import CountVectorizer
 from textblob import TextBlob
+from gensim import matutils, models
 from features import get_features
 import pandas as pd
-
+import scipy.sparse
+import pickle
 import string
 import re
 
 DATA_FILE = 'data/freecodecamp_casual_chatroom.csv'
 DEBUG = True
-
-
-def clean_sentence(sentence):
-    result = sentence.lower()
-    result = re.sub(r'\[!@#$%^&().*?\:"<>~+=]', '', result)
-    result = re.sub(r'[%s]' % re.escape(string.punctuation), '', result)
-    result = re.sub(r'\w*\d\w*', '', result)
-    return result
 
 
 def clean(file):
@@ -67,6 +61,7 @@ def main():
         data = pd.read_pickle('data.pkl')
     else:
         data = clean(DATA_FILE)
+        print(data)
         data = get_features(data)
         data.to_pickle('data.pkl')  # pickle for future usage
 
