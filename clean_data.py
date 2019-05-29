@@ -3,13 +3,16 @@ import re
 import string
 from sklearn.feature_extraction.text import CountVectorizer
 from textblob import TextBlob
+from gensim import matutils, models
+import scipy.sparse
+import pickle
 
 
 def clean_sentence(sentence):
     result = sentence.lower()
-    result = re.sub('\[!@#$%^&().*?\:"<>~+=]', '', result)
-    result = re.sub('[%s]' % re.escape(string.punctuation), '', result)
-    result = re.sub('\w*\d\w*', '', result)
+    result = re.sub(r'\[!@#$%^&().*?\:"<>~+=]', '', result)
+    result = re.sub(r'[%s]' % re.escape(string.punctuation), '', result)
+    result = re.sub(r'\w*\d\w*', '', result)
     return result
 
 
@@ -33,6 +36,52 @@ def clean1(file):
     df.to_pickle('corpus.pkl')
     df['text'] = df['text'].apply(clean_sentence)
     df.to_pickle('clean_data.pkl')
+
+
+def convert_dtm(clean_data):
+    clean_df = pd.read_pickle(clean_data)
+    cv = CountVectorizer(stop_words='english')
+    data_cv = cv.fit_transform(clean_df.text)
+    data_dtm = pd.DataFrame(data_cv.toarray(), columns=cv.get_feature_names())
+    data_dtm.index = clean_df['fromUser.id']
+    print(data_dtm)
+    pickle.dump(cv, open("cv.pkl", "wb"))
+    data_dtm.to_pickle('dtm_data.pkl')
+
+
+def get_features(clean_pickle, og_pickel, dtm_pickel, cv_pickle):
+    df = pd.read_pickle(og_pickel)
+    features_df = pd.read_pickle(clean_pickle)
+    dtm_df = pd.read_pickle(dtm_pickel)
+    # sentiment features
+    features_df['polarity'] = df['text'].apply(pol)
+    features_df['subjectivity'] = df['text'].apply(sub)
+    # word count
+    features_df['wordCount'] = df['text'].str.split().apply(len)
+    # average word length
+    features_df['ave_word_length'] = df['text'].str.replace(" ", ''). \
+        apply(len) / features_df['wordCount']
+    features_df.to_pickle('featured_data.pkl')
+    # topic
+    tdm_df = dtm_df.transpose()
+    sparse_counts = scipy.sparse.csr_matrix(tdm_df)
+    corpus = matutils.Sparse2Corpus(sparse_counts)
+    cv = pickle.load(open(cv_pickle, "rb"))
+    id2word = dict((v, k) for k, v in cv.vocabulary_.items())
+    lda = models.LdaModel(corpus=corpus, id2word=id2word, num_topics=10,
+                          passes=100)
+    print(lda.print_topics())
+    # Ajective ratio
+
+
+def topic_modeling(column):
+    sparse_counts = scipy.sparse.csr_matrix(tdm_df)
+    corpus = matutils.Sparse2Corpus(sparse_counts)
+    cv = pickle.load(open(cv_pickle, "rb"))
+    id2word = dict((v, k) for k, v in cv.vocabulary_.items())
+    lda = models.LdaModel(corpus=corpus, id2word=id2word, num_topics=10,
+                          passes=100)
+    return(lda.print_topics())
 
 
 def remove_common_words(pickle):
@@ -64,24 +113,11 @@ def sub(x):
     return TextBlob(x).sentiment.subjectivity
 
 
-def get_features(clean_pickle, og_pickel):
-    df = pd.read_pickle(og_pickel)
-    features_df = pd.read_pickle(clean_pickle)
-    # sentiment features
-    features_df['polarity'] = df['text'].apply(pol)
-    features_df['subjectivity'] = df['text'].apply(sub)
-    # word count
-    features_df['wordCount'] = df['text'].str.split().apply(len)
-    # average word length
-    features_df['ave_word_length'] = df['text'].str.replace(" ", ''). \
-        apply(len) / features_df['wordCount']
-    features_df.to_pickle('featured_data.pkl')
-
-
 def main():
-    clean1('Data/freecodecamp_casual_chatroom.csv')
+    # clean1('Data/freecodecamp_casual_chatroom.csv')
     # remove_common_words('clean_data.pkl')
-    get_features('clean_data.pkl', 'corpus.pkl')
+    # convert_dtm('clean_data.pkl')
+    get_features('clean_data.pkl', 'corpus.pkl', 'dtm_data.pkl', 'cv.pkl')
 
 
 if __name__ == '__main__':
