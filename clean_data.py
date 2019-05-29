@@ -2,12 +2,12 @@ import pandas as pd
 import re
 import string
 from sklearn.feature_extraction.text import CountVectorizer
-from textblob import TextBlob
 from gensim import matutils, models
+from feature import get_features
 import scipy.sparse
 import pickle
 import nltk
-from features import get_features
+
 
 DATA_FILE = 'data/freecodecamp_casual_chatroom.csv'
 DEBUG = True
@@ -40,7 +40,7 @@ def clean_sentence(sentence):
     result = sentence.lower()
     result = re.sub(r'\[!@#$%^&().*?\:"<>~+=]', '', result)
     result = re.sub(r'[%s]' % re.escape(string.punctuation), '', result)
-    result = re.sub(r'\w*\d\w*', '', result)
+    result = re.sub(r'\d*', ' ', result)
     return result
 
 
@@ -125,6 +125,7 @@ def noun_ratio(sentence):
            (word[1] == 'NNPS'):
             noun_count += 1
     return noun_count / len(tagged_list)
+
 
 """
 def get_features(df):

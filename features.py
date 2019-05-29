@@ -40,7 +40,6 @@ def get_features(df):
                  count_series.name: count_series, length_series.name:
                  length_series}
     df = pd.DataFrame(data_dict)
-    print(df) # test code
     df.to_pickle('feature_data.pkl')
 
 
