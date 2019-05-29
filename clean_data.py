@@ -7,9 +7,10 @@ from gensim import matutils, models
 import scipy.sparse
 import pickle
 import nltk
+from features import get_features
 
 DATA_FILE = 'data/freecodecamp_casual_chatroom.csv'
-DEBUG = False
+DEBUG = True
 
 
 def clean(file):
@@ -114,7 +115,7 @@ def verb_ratio(sentence):
 
 
 def noun_ratio(sentence):
-    data.to_pickle('data.pkl')  # pickle for future usage
+    word_list = sentence.split()
     if len(word_list) == 0:
         return 0
     tagged_list = nltk.pos_tag(word_list)
@@ -125,7 +126,7 @@ def noun_ratio(sentence):
             noun_count += 1
     return noun_count / len(tagged_list)
 
-
+"""
 def get_features(df):
     # sentiment features
     df['polarity'] = df['text_clean'].apply(
@@ -146,17 +147,18 @@ def get_features(df):
     # noun ratio
     df['noun_ratio'] = df['text'].apply(noun_ratio)
     return df
+"""
 
 
 def main():
-    if str(input('Used stored pickle? [Y or N]')).lower()[0] == 'y':
+    if str(input('Used stored pickle? [Y or N]: ')).lower()[0] == 'y':
         data = pd.read_pickle('data.pkl')
     else:
         data = clean(DATA_FILE)
         data.to_pickle('data.pkl')
     data = get_features(data)
-    print(data)
-    data.to_pickle('data.pkl')  # pickle for future usage
+    # print(data)
+    # data.to_pickle('data.pkl')  # pickle for future usage
 
 
 if __name__ == '__main__':
