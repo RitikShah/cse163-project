@@ -34,6 +34,14 @@ def clean(file):
     df['text_clean'] = df['text'].apply(clean_sentence)
 
 
+def clean_sentence(sentence):
+    result = sentence.lower()
+    result = re.sub(r'\[!@#$%^&().*?\:"<>~+=]', '', result)
+    result = re.sub(r'[%s]' % re.escape(string.punctuation), '', result)
+    result = re.sub(r'\w*\d\w*', '', result)
+    return result
+
+
 # broken
 def remove_common_words(pickle):
     df = pd.read_pickle(pickle)
