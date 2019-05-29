@@ -1,8 +1,10 @@
-import pandas as pd
-import re
-import string
 from sklearn.feature_extraction.text import CountVectorizer
 from textblob import TextBlob
+from features import get_features
+import pandas as pd
+
+import string
+import re
 
 DATA_FILE = 'data/freecodecamp_casual_chatroom.csv'
 DEBUG = True
@@ -58,23 +60,6 @@ def remove_common_words(pickle):
         top_dict[c] = list(zip(top.index, top.values))
     print(top_dict)
     """
-
-
-def get_features(df):
-    # sentiment features
-    df['polarity'] = df['text_clean'].apply(
-        lambda x: TextBlob(x).sentiment.polarity
-    )
-    df['subjectivity'] = df['text_clean'].apply(
-        lambda x: TextBlob(x).sentiment.subjectivity
-    )
-
-    # word count
-    df['word_count'] = df['text_clean'].str.split().apply(len)
-
-    # average word length
-    df['ave_word_length'] = \
-        df['text_clean'].str.replace(' ', '').apply(len) / df['word_count']
 
 
 def main():
