@@ -114,7 +114,7 @@ def verb_ratio(sentence):
 
 
 def noun_ratio(sentence):
-    word_list = sentence.split()
+    data.to_pickle('data.pkl')  # pickle for future usage
     if len(word_list) == 0:
         return 0
     tagged_list = nltk.pos_tag(word_list)
