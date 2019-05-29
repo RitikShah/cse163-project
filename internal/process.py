@@ -10,7 +10,8 @@ def process(in_name, out_name):
     dataframe with messages from users in that list, and dataframe only
     contain columns
     """
-    df = pd.read_csv(in_name, na_values=None)
+    df = pd.read_csv(in_name, na_values=None, index_col='sent',
+                     parse_dates=True)
     df = df.dropna(subset=['text'])
     df_count = df[['fromUser.id', 'text']]
     message_count = df_count.groupby(['fromUser.id']).count()
@@ -24,18 +25,17 @@ def process(in_name, out_name):
             'urls',
             'readBy',
             'editedAt',
-            'sent',
             'id',
             'text'
         ]
     ]
     # serializes the dataframe in json file
     with open(out_name, 'w') as output:
-        df.to_json(orient='records', path_or_buf=output)
+        df.to_pickle(output, compression=None)
     print('Success!')
 
 
 if __name__ == '__main__':
-    in_file = 'freecodecamp_casual_chatroom.csv'
-    out_file = 'data.json'
+    in_file = 'Data/freecodecamp_casual_chatroom.csv'
+    out_file = 'Data/data.pkl'
     process(in_file, out_file)
