@@ -6,9 +6,10 @@ from textblob import TextBlob
 from gensim import matutils, models
 import scipy.sparse
 import pickle
+import nltk
 
 DATA_FILE = 'data/freecodecamp_casual_chatroom.csv'
-DEBUG = True
+DEBUG = False
 
 
 def clean(file):
@@ -87,23 +88,63 @@ def remove_common_words(pickle):
     """
 
 
-def pol(sentence):
-    return TextBlob(sentence).sentiment.polarity
+def adj_ratio(sentence):
+    word_list = sentence.split()
+    if len(word_list) == 0:
+        return 0
+    tagged_list = nltk.pos_tag(word_list)
+    adj_count = 0
+    for word in tagged_list:
+        if (word[1] == 'JJ') | (word[1] == 'JJR') | (word[1] == 'JJS'):
+            adj_count += 1
+    return adj_count / len(tagged_list)
 
 
-def sub(sentence):
-    return TextBlob(sentence).sentiment.subjectivity
+def verb_ratio(sentence):
+    word_list = sentence.split()
+    if len(word_list) == 0:
+        return 0
+    tagged_list = nltk.pos_tag(word_list)
+    verb_count = 0
+    for word in tagged_list:
+        if (word[1] == 'VB') | (word[1] == 'VBD') | (word[1] == 'VBG') | \
+           (word[1] == 'VBN') | (word[1] == 'VBP') | (word[1] == 'VBZ'):
+            verb_count += 1
+    return verb_count / len(tagged_list)
+
+
+def noun_ratio(sentence):
+    word_list = sentence.split()
+    if len(word_list) == 0:
+        return 0
+    tagged_list = nltk.pos_tag(word_list)
+    noun_count = 0
+    for word in tagged_list:
+        if (word[1] == 'NN') | (word[1] == 'NNS') | (word[1] == 'NNP') | \
+           (word[1] == 'NNPS'):
+            noun_count += 1
+    return noun_count / len(tagged_list)
 
 
 def get_features(df):
     # sentiment features
-    df['polarity'] = df['text_clean'].apply(pol)
-    df['subjectivity'] = df['text_clean'].apply(sub)
+    df['polarity'] = df['text_clean'].apply(
+        lambda x: TextBlob(x).sentiment.polarity
+        )
+    df['subjectivity'] = df['text_clean'].apply(
+        lambda x: TextBlob(x).sentiment.subjectivity
+        )
     # word count
     df['word_count'] = df['text'].str.split().apply(len)
     # average word length
     df['ave_word_length'] = \
         df['text'].str.replace(' ', '').apply(len) / df['word_count']
+    # adj ratio
+    df['adj_ratio'] = df['text'].apply(adj_ratio)
+    # verb ratio
+    df['verb_ratio'] = df['text'].apply(verb_ratio)
+    # noun ratio
+    df['noun_ratio'] = df['text'].apply(noun_ratio)
     return df
 
 
@@ -112,11 +153,10 @@ def main():
         data = pd.read_pickle('data.pkl')
     else:
         data = clean(DATA_FILE)
-        print(data)
-        data = get_features(data)
-        data.to_pickle('data.pkl')  # pickle for future usage
-
-    # remove_common_words('clean_data.pkl')
+        data.to_pickle('data.pkl')
+    data = get_features(data)
+    print(data)
+    data.to_pickle('data.pkl')  # pickle for future usage
 
 
 if __name__ == '__main__':
