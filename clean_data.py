@@ -1,12 +1,12 @@
-import pandas as pd
-import re
-import string
 from sklearn.feature_extraction.text import CountVectorizer
-# from gensim import matutils, models
 from features import get_features
+# from gensim import matutils, models
+import pandas as pd
 import scipy.sparse
-import pickle
 import logging
+import pickle
+
+import re
 
 DATA_FILE = 'data/freecodecamp_casual_chatroom.csv'
 DEBUG = True
@@ -90,16 +90,14 @@ def remove_common_words(pickle):
 
 
 def main():
-    if str(input('Used stored pickle? [Y or N]: ')).lower()[0] == 'y':
-        data = pd.read_pickle('data.pkl')
-    else:
-        data = clean(DATA_FILE)
-        # data.to_pickle('data.pkl')
-        data = get_features(data)
-        # print(data)
-        data.to_pickle('data.pkl')  # pickle for future usage
-
+    data = clean(DATA_FILE)
+    data = get_features(data)
     print(data)
+    breakpoint()
+
+    # run main.py to use the pickles
+    # print(data)
+    # data.to_pickle('data.pkl')  # pickle for future usage
 
 
 if __name__ == '__main__':

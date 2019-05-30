@@ -45,6 +45,14 @@ def noun_ratio(df):
     return df['text'].apply(_calc) / df['wordCount']
 
 
+def mentions(df):
+    return df['mentions'].apply(eval).apply(len)
+
+
+def urls(df):
+    return df['urls'].apply(eval).apply(len)
+
+
 def fix_infs(df, col):
     df.loc[np.isinf(df[col]), col] = 0
 
@@ -54,7 +62,8 @@ def get_features(df):
     features = df.copy()  # deep copy
     feature_columns = ['polarity', 'subjectivity',
                        'wordCount', 'avgWordLength',
-                       'adjRatio', 'verbRatio', 'nounRatio']
+                       'adjRatio', 'verbRatio', 'nounRatio',
+                       'mentionsCount', 'urlsCount']
 
     # sentiment features
     features['polarity'] = polarity(features)
@@ -74,6 +83,10 @@ def get_features(df):
     fix_infs(features, 'verbRatio')
     features['nounRatio'] = noun_ratio(features)
     fix_infs(features, 'nounRatio')
+
+    features['mentionsCount'] = mentions(features)
+    features['urlsCount'] = urls(features)
+
     return features.loc[:, feature_columns + ['id', 'readBy']]
 
 
