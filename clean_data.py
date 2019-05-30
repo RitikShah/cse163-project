@@ -90,7 +90,7 @@ def remove_common_words(pickle):
 
 
 def main():
-    if str(input('Used stored pickle? [Y or N]')).lower()[0] == 'y':
+    if str(input('Used stored pickle? [Y or N]: ')).lower()[0] == 'y':
         data = pd.read_pickle('data.pkl')
     else:
         data = clean(DATA_FILE)
