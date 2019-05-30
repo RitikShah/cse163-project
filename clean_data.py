@@ -2,18 +2,25 @@ import pandas as pd
 import re
 import string
 from sklearn.feature_extraction.text import CountVectorizer
-from gensim import matutils, models
-from feature import get_features
+# from gensim import matutils, models
+from features import get_features
 import scipy.sparse
 import pickle
+import logging
 
 DATA_FILE = 'data/freecodecamp_casual_chatroom.csv'
-DEBUG = False
+DEBUG = True
+
+logging.basicConfig(level=logging.DEBUG)
 
 
 def clean(file):
     # drop empty text
-    df = pd.read_csv(file, na_values=None, low_memory=False)
+    logging.info('reading file into dataframe')
+    if not DEBUG:
+        df = pd.read_csv(file, na_values=None, low_memory=False)
+    else:
+        df = pd.read_csv(file, na_values=None, low_memory=False, nrows=5000)
     df = df.dropna(subset=['text'])
 
     # select certain columns
@@ -28,18 +35,13 @@ def clean(file):
                 'id',
                 'text'
             ]]
-    if DEBUG:
-        df = df.loc[0:1000, :]
+    logging.info('cleaning text into text_clean')
     df['text_clean'] = df['text'].apply(clean_sentence)
     return df
 
 
 def clean_sentence(sentence):
-    result = sentence.lower()
-    result = re.sub(r'\[!@#$%^&().*?\:"<>~+=]', '', result)
-    result = re.sub(r'[%s]' % re.escape(string.punctuation), '', result)
-    result = re.sub(r'\d*', ' ', result)
-    return result
+    return re.sub(r'[^A-Za-z\s]+', '', sentence.lower())
 
 
 # broken
@@ -92,10 +94,12 @@ def main():
         data = pd.read_pickle('data.pkl')
     else:
         data = clean(DATA_FILE)
-        data.to_pickle('data.pkl')
-    data = get_features(data)
+        # data.to_pickle('data.pkl')
+        data = get_features(data)
+        # print(data)
+        data.to_pickle('data.pkl')  # pickle for future usage
+
     print(data)
-    data.to_pickle('data.pkl')  # pickle for future usage
 
 
 if __name__ == '__main__':
