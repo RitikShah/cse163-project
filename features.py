@@ -50,6 +50,12 @@ def fix_infs(df, col):
 
 
 def get_features(df):
+    logging.info('getting features from text and text_clean')
+    features = df.copy()  # deep copy
+    feature_columns = ['polarity', 'subjectivity',
+                       'wordCount', 'avgWordLength',
+                       'adjRatio', 'verbRatio', 'nounRatio']
+
     # sentiment features
     features['polarity'] = polarity(features)
     features['subjectivity'] = subjectivity(features)
