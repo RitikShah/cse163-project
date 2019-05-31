@@ -7,12 +7,16 @@ VERBS = {'VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ'}
 NOUNS = {'NN', 'NNS', 'NNP', 'NNPS'}  # unused
 
 
+def transform(df, col):
+    return df[col].apply(TextBlob)
+
+
 def polarity(df):
-    return df['text_clean'].apply(lambda x: TextBlob(x).sentiment.polarity)
+    return df['textblobs_clean'].apply(lambda x: x.sentiment.polarity)
 
 
 def subjectivity(df):
-    return df['text_clean'].apply(lambda x: TextBlob(x).sentiment.subjectivity)
+    return df['textblobs_clean'].apply(lambda x: x.sentiment.subjectivity)
 
 
 def word_count(df):
@@ -26,23 +30,27 @@ def avg_word_length(df):
 # could use lambdas, but using internal functions bc readability
 def adj_ratio(df):
     def _calc(sen):
-        return len(list(filter(lambda x: x[1] in ADJS, TextBlob(sen).tags)))
+        return sum(
+            1 for v in filter(lambda x: x[1] in ADJS, sen.tags)
+        )
 
-    return df['text'].apply(_calc) / df['wordCount']
+    return df['textblobs'].apply(_calc) / df['wordCount']
 
 
 def verb_ratio(df):
     def _calc(sen):
-        return len(list(filter(lambda x: x[1] in VERBS, TextBlob(sen).tags)))
+        return sum(
+            1 for v in filter(lambda x: x[1] in VERBS, sen.tags)
+        )
 
-    return df['text'].apply(_calc) / df['wordCount']
+    return df['textblobs'].apply(_calc) / df['wordCount']
 
 
 def noun_ratio(df):
     def _calc(sen):
-        return len(TextBlob(sen).noun_phrases)
+        return len(sen.noun_phrases)
 
-    return df['text'].apply(_calc) / df['wordCount']
+    return df['textblobs'].apply(_calc) / df['wordCount']
 
 
 def mentions(df):
@@ -65,28 +73,46 @@ def get_features(df):
                        'adjRatio', 'verbRatio', 'nounRatio',
                        'mentionsCount', 'urlsCount']
 
+    # making textblobs
+    logging.debug('preprocessing textblobs')
+    features['textblobs'] = transform(df, 'text')
+    features['textblobs_clean'] = transform(df, 'text_clean')
+
+    logging.debug('calculating polarity and subjectivity')
     # sentiment features
+    logging.debug('  pol')
     features['polarity'] = polarity(features)
+    logging.debug('  sub')
     features['subjectivity'] = subjectivity(features)
 
+    logging.debug('calculating word count')
     # word count
     features['wordCount'] = word_count(features)
 
     # average word length
+    logging.debug('calculating avg word length')
     features['avgWordLength'] = avg_word_length(features)
     fix_infs(features, 'avgWordLength')
 
+    logging.debug('calculating ratios')
     # ratios
+    logging.debug('  adj')
     features['adjRatio'] = adj_ratio(features)
     fix_infs(features, 'adjRatio')
+
+    logging.debug('  verb')
     features['verbRatio'] = verb_ratio(features)
     fix_infs(features, 'verbRatio')
+
+    logging.debug('  noun')
     features['nounRatio'] = noun_ratio(features)
     fix_infs(features, 'nounRatio')
 
+    logging.debug('mentions and url count')
     features['mentionsCount'] = mentions(features)
     features['urlsCount'] = urls(features)
 
+    logging.debug('done!')
     return features.loc[:, feature_columns + ['id', 'readBy']]
 
 
