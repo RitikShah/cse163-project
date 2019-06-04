@@ -62,7 +62,8 @@ def urls(df):
 
 
 def fix_infs(df, col):
-    df.loc[np.isinf(df[col]), col] = 0
+    df[col].replace([np.inf, -np.inf], np.nan)
+    df[col].fillna(value=0)
 
 
 def get_features(df):
