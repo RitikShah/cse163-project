@@ -20,8 +20,8 @@ def ask_question(s):
 if ask_question('test max_depth? [Y or N]: '):
     plot_data_1 = []
 
-    print('y_train', list(y_train)[0:3] + ['...'] + list(y_train)[-3:])
-    print('y_test', list(y_test)[0:3] + ['...'] + list(y_test)[-3:])
+    # print('y_train', list(y_train)[0:3] + ['...'] + list(y_train)[-3:])
+    # print('y_test', list(y_test)[0:3] + ['...'] + list(y_test)[-3:])
 
     for i in range(1, 100):
         model = DecisionTreeRegressor(max_depth=i)
@@ -32,15 +32,15 @@ if ask_question('test max_depth? [Y or N]: '):
         train_score = mean_squared_error(y_train, train_predict)
         test_score = mean_squared_error(y_test, test_predict)
 
-        print('#:', i)
-        print('train_predict', train_predict)
-        print('test_predict', test_predict)
+        # print('#:', i)
+        # print('train_predict', train_predict)
+        # print('test_predict', test_predict)
 
         plot_data_1.append({'max depth': i, 'train accuracy': train_score,
                             'test accuracy': test_score})
 
     plot_data_1 = pd.DataFrame(plot_data_1)
-    print(plot_data_1.loc[plot_data_1['test accuracy'].idxmax()])
+    print(plot_data_1.loc[plot_data_1['test accuracy'].idxmin()])
 
     fig, ax = plt.subplots(1, figsize=(30, 30))
     sns.relplot(ax=ax, kind='line', x='max depth', y='train accuracy',
@@ -62,7 +62,7 @@ if ask_question('test max_leaf_nodes? [Y or N]: '):
                             'test accuracy': test_score})
 
     plot_data_2 = pd.DataFrame(plot_data_2)
-    print(plot_data_2.loc[plot_data_2['test accuracy'].idxmax()])
+    print(plot_data_2.loc[plot_data_2['test accuracy'].idxmin()])
 
     fig, (ax1, ax2) = plt.subplots(2, figsize=(30, 30))
     sns.relplot(ax=ax1, kind='line', x='max leaf node', y='train accuracy',
@@ -84,7 +84,7 @@ if ask_question('test min_samples_split? [Y or N]: '):
                             train_score, 'test accuracy': test_score})
 
     plot_data_3 = pd.DataFrame(plot_data_3)
-    print(plot_data_3.loc[plot_data_3['test accuracy'].idxmax()])
+    print(plot_data_3.loc[plot_data_3['test accuracy'].idxmin()])
 
     fig, (ax1, ax2) = plt.subplots(2, figsize=(30, 30))
     sns.relplot(ax=ax1, kind='line', x='min sample split', y='train accuracy',
@@ -106,7 +106,7 @@ if ask_question('test min_samples_leaf? [Y or N]: '):
                             train_score, 'test accuracy': test_score})
 
     plot_data_4 = pd.DataFrame(plot_data_4)
-    print(plot_data_4.loc[plot_data_4['test accuracy'].idxmax()])
+    print(plot_data_4.loc[plot_data_4['test accuracy'].idxmin()])
 
     fig, (ax1, ax2) = plt.subplots(2, figsize=(30, 30))
     sns.relplot(ax=ax1, kind='line', x='min sample leaf', y='train accuracy',
@@ -128,7 +128,7 @@ if ask_question('test max_features? [Y or N]: '):
                             train_score, 'test accuracy': test_score})
 
     plot_data_5 = pd.DataFrame(plot_data_5)
-    print(plot_data_5.loc[plot_data_5['test accuracy'].idxmax()])
+    print(plot_data_5.loc[plot_data_5['test accuracy'].idxmin()])
 
     fig, (ax1, ax2) = plt.subplots(2, figsize=(30, 30))
     sns.relplot(ax=ax1, kind='line', x='max features', y='train accuracy',

@@ -20,10 +20,10 @@ def main():
         logging.info('unpickling')
         data = pd.read_pickle('data.pkl')
     else:
-        data = clean(DATA_FILE)
+        cleaned = clean(DATA_FILE)
         # data.to_pickle('data.pkl')
         start = time()
-        data = get_features(data)
+        data = get_features(cleaned)
         logging.debug(f'features took: {round(time() - start, 3)}')
         # print(data)
         logging.info('saving to pickle')

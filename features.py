@@ -61,6 +61,14 @@ def urls(df):
     return df['urls'].apply(eval).apply(len)
 
 
+def exclamations(df):
+    return df['text'].apply(lambda t: t.count('!'))
+
+
+def questions(df):
+    return df['text'].apply(lambda t: t.count('?'))
+
+
 def fix_infs(df, col):
     df[col] = df[col].replace([np.inf, -np.inf], np.nan)
     df[col] = df[col].fillna(value=0)
@@ -72,7 +80,8 @@ def get_features(df):
     feature_columns = ['polarity', 'subjectivity',
                        'wordCount', 'avgWordLength',
                        'adjRatio', 'verbRatio', 'nounRatio',
-                       'mentionsCount', 'urlsCount']
+                       'mentionsCount', 'urlsCount',
+                       'exclamationCount', 'questionCount']
 
     # making textblobs
     logging.debug('preprocessing textblobs')
@@ -112,6 +121,10 @@ def get_features(df):
     logging.debug('mentions and url count')
     features['mentionsCount'] = mentions(features)
     features['urlsCount'] = urls(features)
+
+    logging.debug('exclamation and question counts')
+    features['exclamationCount'] = exclamations(features)
+    features['questionCount'] = questions(features)
 
     logging.debug('done!')
     return features.loc[:, feature_columns + ['id', 'readBy']]
