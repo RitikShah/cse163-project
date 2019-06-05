@@ -5,7 +5,6 @@ import pandas as pd
 import scipy.sparse
 import logging
 import pickle
-
 import re
 
 DATA_FILE = 'data/freecodecamp_casual_chatroom.csv'
@@ -20,7 +19,8 @@ def clean(file):
     if not DEBUG:
         df = pd.read_csv(file, na_values=None, low_memory=False)
     else:
-        df = pd.read_csv(file, na_values=None, low_memory=False, nrows=5000)
+        df = pd.read_csv(file, na_values=None, low_memory=False,
+                         nrows=50000)
     df = df.dropna(subset=['text'])
 
     # select certain columns
