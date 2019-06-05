@@ -21,7 +21,6 @@ def main():
         data = pd.read_pickle('data.pkl')
     else:
         cleaned = clean(DATA_FILE)
-        breakpoint()
         # data.to_pickle('data.pkl')
         start = time()
         data = get_features(cleaned)
