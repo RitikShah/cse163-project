@@ -1,5 +1,4 @@
 from features import get_features
-# from gensim import matutils, models
 import pandas as pd
 import logging
 import re
