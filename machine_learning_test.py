@@ -47,33 +47,35 @@ if ask_question('test max_depth? [Y or N]: '):
 
     sns.relplot(kind='line', x='max depth', y='mean square error',
                 hue='predict type', data=plot_data_1)
-    plt.show()
+    plt.savefig('max_depth.png')
 
 if ask_question('test min_samples_split? [Y or N]: '):
     plot_data_2 = []
-    for i in range(2, 300):
+    for i in range(1, 100):
+        i = i / 100
         model = DecisionTreeRegressor(min_samples_split=i)
         model.fit(x_train, y_train)
 
         train_score = mean_squared_error(y_train, model.predict(x_train))
         test_score = mean_squared_error(y_test, model.predict(x_test))
 
-        plot_data_2.append({'min sample split': i, 'mean square error':
+        plot_data_2.append({'min samples split': i, 'mean square error':
                             train_score, 'predict type': 'trainning'})
-        plot_data_2.append({'min sample split': i, 'mean square error':
+        plot_data_2.append({'min samples split': i, 'mean square error':
                             test_score, 'predict type': 'testing'})
 
     plot_data_2 = pd.DataFrame(plot_data_2)
     test_data = plot_data_2[plot_data_2['predict type'] == 'testing']
     print(plot_data_2.loc[test_data['mean square error'].idxmin()])
 
-    sns.relplot(kind='line', x='min sample split', y='mean square error',
+    sns.relplot(kind='line', x='min samples split', y='mean square error',
                 hue='predict type', data=plot_data_2)
-    plt.show()
+    plt.savefig('min_samples_split.png')
 
 if ask_question('test min_samples_leaf? [Y or N]: '):
     plot_data_3 = []
-    for i in range(1, 1000):
+    for i in range(1, 51):
+        i = i / 100
         model = DecisionTreeRegressor(min_samples_leaf=i)
         model.fit(x_train, y_train)
 
@@ -91,13 +93,13 @@ if ask_question('test min_samples_leaf? [Y or N]: '):
 
     sns.relplot(kind='line', x='min sample leaf', y='mean square error',
                 hue='predict type', data=plot_data_3)
-    plt.show()
+    plt.savefig('min_samples_leaf.png')
 
 if ask_question('test min_weight_fraction_leaf ? [Y or N]: '):
     plot_data_5 = []
     for i in range(1, 51):
         i = i / 100
-        model = DecisionTreeRegressor(min_samples_leaf=i)
+        model = DecisionTreeRegressor(min_weight_fraction_leaf=i)
         model.fit(x_train, y_train)
 
         train_score = mean_squared_error(y_train, model.predict(x_train))
@@ -114,7 +116,7 @@ if ask_question('test min_weight_fraction_leaf ? [Y or N]: '):
 
     sns.relplot(kind='line', x='min weight fraction leaf',
                 y='mean square error', hue='predict type', data=plot_data_5)
-    plt.show()
+    plt.savefig('min_weight_fraction_leaf.png')
 
 if ask_question('test max_features? [Y or N]: '):
     plot_data_6 = []
@@ -137,7 +139,7 @@ if ask_question('test max_features? [Y or N]: '):
 
     sns.relplot(kind='line', x='max features', y='mean square error',
                 hue='predict type', data=plot_data_6)
-    plt.show()
+    plt.savefig('max_features.png')
 
 if ask_question('test max_leaf_nodes? [Y or N]: '):
     plot_data_7 = []
@@ -159,7 +161,7 @@ if ask_question('test max_leaf_nodes? [Y or N]: '):
 
     sns.relplot(kind='line', x='max leaf nodes', y='mean square error',
                 hue='predict type', data=plot_data_7)
-    plt.show()
+    plt.savefig('max_leaf_nodes.png')
 
 if ask_question('test min_impurity_decrease? [Y or N]: '):
     plot_data_8 = []
@@ -182,7 +184,7 @@ if ask_question('test min_impurity_decrease? [Y or N]: '):
 
     sns.relplot(kind='line', x='min impurity decrease', y='mean square error',
                 hue='predict type', data=plot_data_8)
-    plt.show()
+    plt.savefig('min_inpurity_decrease.png')
 
 if ask_question('test min_impurity_split? [Y or N]: '):
     plot_data_9 = []
@@ -205,4 +207,4 @@ if ask_question('test min_impurity_split? [Y or N]: '):
 
     sns.relplot(kind='line', x='min impurity split', y='mean square error',
                 hue='predict type', data=plot_data_9)
-    plt.show()
+    plt.savefig('min_impurity_split.png')
