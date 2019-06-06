@@ -23,6 +23,7 @@ def clean(file):
 
     # select certain columns
     df = df[[
+                'sent',
                 'fromUser.displayName',
                 'fromUser.username',
                 'fromUser.id',

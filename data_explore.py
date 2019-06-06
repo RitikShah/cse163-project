@@ -6,8 +6,4 @@ feature_columns = ['polarity', 'subjectivity',
                    'adjRatio', 'verbRatio', 'nounRatio',
                    'mentionsCount', 'urlsCount']
 
-data = pd.read_pickle('data.pkl')
-print(data)
-data[data.isin([np.nan, np.inf, -np.inf]).any()][feature_columns] = 0
-print(data)
-data.to_pickle('data.pkl')
+print(data[])

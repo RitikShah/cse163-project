@@ -119,7 +119,7 @@ def get_features(features):
     features['questionCount'] = questions(features['text'])
 
     logging.debug('done!')
-    return features.loc[:, feature_columns + ['id', 'readBy']]
+    return features.loc[:, feature_columns + ['id', 'readBy', 'sent']]
 
 
 if __name__ == '__main__':
