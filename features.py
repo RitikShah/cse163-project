@@ -127,7 +127,7 @@ def get_features(df):
     features['questionCount'] = questions(features)
 
     logging.debug('done!')
-    return features.loc[:, feature_columns + ['id', 'readBy']]
+    return features.loc[:, feature_columns + ['id', 'readBy', 'sent']]
 
 
 if __name__ == '__main__':
