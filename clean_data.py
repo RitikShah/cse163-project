@@ -3,7 +3,7 @@ import logging
 import re
 
 DATA_FILE = 'data/freecodecamp_casual_chatroom.csv'
-DEBUG = False
+DEBUG = True
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -18,7 +18,7 @@ def clean(file):
         df = pd.read_csv(file, na_values=None, low_memory=False)
     else:
         df = pd.read_csv(file, na_values=None, low_memory=False,
-                         nrows=50000)
+                         nrows=500000)
     df = df.dropna(subset=['text'])
 
     # select certain columns
