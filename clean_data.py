@@ -1,5 +1,3 @@
-from features import get_features
-# from gensim import matutils, models
 import pandas as pd
 import logging
 import re
@@ -11,13 +9,16 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 def clean(file):
+    def clean_sentence(sentence):
+        return re.sub(r'[^A-Za-z\s]+', '', sentence.lower())
+
     # drop empty text
     logging.info('reading file into dataframe')
     if not DEBUG:
         df = pd.read_csv(file, na_values=None, low_memory=False)
     else:
         df = pd.read_csv(file, na_values=None, low_memory=False,
-                         nrows=50000)
+                         nrows=500000)
     df = df.dropna(subset=['text'])
 
     # select certain columns
@@ -38,19 +39,10 @@ def clean(file):
     return df
 
 
-def clean_sentence(sentence):
-    return re.sub(r'[^A-Za-z\s]+', '', sentence.lower())
-
-
 def main():
     data = clean(DATA_FILE)
-    data = get_features(data)
-    print(data)
-    breakpoint()
-
-    # run main.py to use the pickles
-    # print(data)
-    # data.to_pickle('data.pkl')  # pickle for future usage
+    logging.info('pickling to cleaned.pkl')
+    data.to_pickle('cleaned.pkl')
 
 
 if __name__ == '__main__':

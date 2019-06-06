@@ -2,71 +2,58 @@ from textblob import TextBlob
 import numpy as np
 import logging
 
-ADJS = {'JJ', 'JJR', 'JJS'}
-VERBS = {'VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ'}
-NOUNS = {'NN', 'NNS', 'NNP', 'NNPS'}  # unused
+ADJS = r'(JJR)|(JJS)|(JJ)'
+VERBS = r'(VBD)|(VBG)|(VBN)|(VBP)|(VBZ)|(VB)'
+NOUNS = r'(NNPS)|(NNP)|(NNS)|(NN)'
 
 
 def transform(df, col):
     return df[col].apply(TextBlob)
 
 
-def polarity(df):
-    return df['textblobs_clean'].apply(lambda x: x.sentiment.polarity)
+def polarity(col):
+    return col.apply(lambda x: x.sentiment.polarity)
 
 
-def subjectivity(df):
-    return df['textblobs_clean'].apply(lambda x: x.sentiment.subjectivity)
+def subjectivity(col):
+    return col.apply(lambda x: x.sentiment.subjectivity)
 
 
-def word_count(df):
-    return df['text'].str.split().apply(len)
+def word_count(col):
+    return col.str.count(r'\s')
 
 
 def avg_word_length(df):
-    return df['text'].str.replace(' ', '').apply(len) / df['wordCount']
+    return df['text'].str.replace(' ', '').str.len() / df['wordCount']
 
 
 # could use lambdas, but using internal functions bc readability
 def adj_ratio(df):
-    def _calc(sen):
-        return sum(
-            1 for v in filter(lambda x: x[1] in ADJS, sen.tags)
-        )
-
-    return df['textblobs'].apply(_calc) / df['wordCount']
+    return df['textblobs'].str.count(ADJS) / df['wordCount']
 
 
 def verb_ratio(df):
-    def _calc(sen):
-        return sum(
-            1 for v in filter(lambda x: x[1] in VERBS, sen.tags)
-        )
-
-    return df['textblobs'].apply(_calc) / df['wordCount']
+    return df['textblobs'].str.count(VERBS) / df['wordCount']
 
 
 def noun_ratio(df):
-    def _calc(sen):
-        return len(sen.noun_phrases)
-
-    return df['textblobs'].apply(_calc) / df['wordCount']
+    return df['textblobs'].str.count(NOUNS) / df['wordCount']
 
 
-def mentions(df):
-    return df['mentions'].apply(eval).apply(len)
+def mentions(col):
+    return col.apply(eval).apply(len)
 
 
-def urls(df):
-    return df['urls'].apply(eval).apply(len)
+def urls(col):
+    return col.apply(eval).apply(len)
 
 
-def exclamations(df):
-    return df['text'].apply(lambda t: t.count('!'))
+def exclamations(col):
+    return col.str.count('!')
 
 
-def questions(df):
-    return df['text'].apply(lambda t: t.count('?'))
+def questions(col):
+    return col.str.count(r'\?')  # it's trying to parse it as regex :/
 
 
 def fix_infs(df, col):
@@ -74,9 +61,10 @@ def fix_infs(df, col):
     df[col] = df[col].fillna(value=0)
 
 
-def get_features(df):
+def get_features(features):
     logging.info('getting features from text and text_clean')
-    features = df.copy()  # deep copy
+    features = features[['text', 'text_clean', 'mentions',
+                         'urls', 'id', 'readBy']]  # expand on
     feature_columns = ['polarity', 'subjectivity',
                        'wordCount', 'avgWordLength',
                        'adjRatio', 'verbRatio', 'nounRatio',
@@ -85,19 +73,23 @@ def get_features(df):
 
     # making textblobs
     logging.debug('preprocessing textblobs')
-    features['textblobs'] = transform(df, 'text')
-    features['textblobs_clean'] = transform(df, 'text_clean')
+    logging.debug('  textblobs for normal text')
+    features['textblobs'] = transform(features, 'text').apply(
+        lambda blob: ' '.join([x[1] for x in blob.tags])
+    )
+    logging.debug('  textblobs for clean text')
+    features['textblobs_clean'] = transform(features, 'text_clean')
 
     logging.debug('calculating polarity and subjectivity')
     # sentiment features
     logging.debug('  pol')
-    features['polarity'] = polarity(features)
+    features['polarity'] = polarity(features['textblobs_clean'])
     logging.debug('  sub')
-    features['subjectivity'] = subjectivity(features)
+    features['subjectivity'] = subjectivity(features['textblobs_clean'])
 
     logging.debug('calculating word count')
     # word count
-    features['wordCount'] = word_count(features)
+    features['wordCount'] = word_count(features['text'])
 
     # average word length
     logging.debug('calculating avg word length')
@@ -119,12 +111,12 @@ def get_features(df):
     fix_infs(features, 'nounRatio')
 
     logging.debug('mentions and url count')
-    features['mentionsCount'] = mentions(features)
-    features['urlsCount'] = urls(features)
+    features['mentionsCount'] = mentions(features['mentions'])
+    features['urlsCount'] = urls(features['urls'])
 
     logging.debug('exclamation and question counts')
-    features['exclamationCount'] = exclamations(features)
-    features['questionCount'] = questions(features)
+    features['exclamationCount'] = exclamations(features['text'])
+    features['questionCount'] = questions(features['text'])
 
     logging.debug('done!')
     return features.loc[:, feature_columns + ['id', 'readBy', 'sent']]

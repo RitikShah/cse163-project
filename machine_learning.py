@@ -1,8 +1,17 @@
-import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.metrics import mean_squared_error
+import pandas as pd
 
+# TODO: throw this in a function pls
+
+# hyper parameters constants
+DEPTH = 5
+SAMPLES_SPLIT = 0.13
+SAMPLES_LEAF = 0.02
+WEIGHT_FRACTION_LEAF = 0.02
+LEAF_NODES = 29
+IMPURITY_DECREASE = 0.03
 
 data = pd.read_pickle('data.pkl')
 ml_data = data = data.loc[:, data.columns != 'id']
@@ -10,13 +19,28 @@ x = ml_data.loc[:, ml_data.columns != 'readBy']
 y = ml_data['readBy']
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
 
+<<<<<<< HEAD
 model = DecisionTreeRegressor(max_depth=5, min_samples_split=0.07,
                               min_samples_leaf=0.09,
                               min_weight_fraction_leaf=0.09,
                               max_leaf_nodes=21, min_impurity_decrease=0.01)
+=======
+# hyper parameters were tested in an earlier program
+model = DecisionTreeRegressor(
+    max_depth=DEPTH,
+    min_samples_split=SAMPLES_SPLIT,
+    min_samples_leaf=SAMPLES_LEAF,
+    min_weight_fraction_leaf=WEIGHT_FRACTION_LEAF,
+    max_leaf_nodes=LEAF_NODES,
+    min_impurity_decrease=IMPURITY_DECREASE
+)
+
+>>>>>>> 2094e96bd82cd93635ab8f460e0444ad6e3aa1a1
 model.fit(x_train, y_train)
+
 a = list(model.predict(x_test))
 b = list(y_test)
+
 close = 0
 for i in range(len(a)):
     print(b[i], a[i])
