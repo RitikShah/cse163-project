@@ -41,9 +41,9 @@ def isolated_test(train, dev, test):
             model.fit(x_train, y_train)
 
             train_predict = model.predict(x_train)
-            test_predict = model.predict(x_test)
+            dev_predict = model.predict(x_test)
             train_score = mean_squared_error(y_train, train_predict)
-            test_score = mean_squared_error(y_test, test_predict)
+            dev_score = mean_squared_error(y_test, dev_predict)
 
             # print('#:', i)
             # print('train_predict', train_predict)
@@ -51,10 +51,10 @@ def isolated_test(train, dev, test):
 
             print({'max depth': i,
                    'mse train': train_score,
-                   'mse test': test_score})
+                   'mse test': dev_score})
 
-            if min_mse is None or test_score < min_mse:
-                min_mse = test_score
+            if min_mse is None or dev_score < min_mse:
+                min_mse = dev_score
                 min_depth = i
                 min_model = model
 
@@ -64,7 +64,8 @@ def isolated_test(train, dev, test):
         print(f'dev mse: {min_mse}')
         print(f'depth: {min_depth}')
 
-        model = DecisionTreeRegressor(max_depth=min_depth)
+        test_score = mean_squared_error(y_test, min_model.predict(x_test))
+        print(f'test mse: {test_score}')
 
 
         # sns.relplot(kind='line', x='max depth', y='mean square error',
