@@ -3,7 +3,7 @@ import logging
 import re
 
 DATA_FILE = 'data/freecodecamp_casual_chatroom.csv'
-DEBUG = True
+DEBUG = False
 
 logging.basicConfig(level=logging.DEBUG)
 

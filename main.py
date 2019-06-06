@@ -29,6 +29,10 @@ def do_clean(data):
     return out
 
 
+def sample(data, frac):
+    return data.sample(frac=frac).reset_index(drop=True)
+
+
 def ask_question(s):
     return str(input(s)).upper()[0] == 'Y'
 
@@ -37,18 +41,20 @@ def main():
     if ask_question('Use any stored pickles? [Y or N]: '):
         pkl = str(input('Which pickle? [Clean] or [Feature] data? ')).upper()
         logging.info('unpickling')
-        if pkl == 'Clean':
+        if pkl == 'CLEAN':
             data = pd.read_pickle('cleaned.pkl')
+            data = sample(data, 0.1)
             data = do_features(data)
             logging.info('saving to featured.pkl')
-            data.to_pickle('featured.pkl')  # pickle for future usage
-        elif pkl == 'Feature':
+        elif pkl == 'FEATURE':
             data = pd.read_pickle('featured.pkl')
     else:
         data = do_clean(DATA_FILE)
+        data = sample(data, 0.1)
         data = do_features(data)
         logging.info('saving to pickle')
-        data.to_pickle('featured.pkl')  # pickle for future usage
+
+    data.to_pickle('featured.pkl')  # pickle for future usage
 
     print(data)  # for now
     if ask_question('Debug? [Y or N]: '):

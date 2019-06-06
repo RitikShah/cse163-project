@@ -30,6 +30,7 @@ def avg_word_length(df):
 # could use lambdas, but using internal functions bc readability
 def adj_ratio(df):
     def _calc(sen):
+        print(sen)
         return sum(
             1 for v in filter(lambda x: x[1] in ADJS, sen.tags)
         )
@@ -39,6 +40,7 @@ def adj_ratio(df):
 
 def verb_ratio(df):
     def _calc(sen):
+        print(sen)
         return sum(
             1 for v in filter(lambda x: x[1] in VERBS, sen.tags)
         )
@@ -48,6 +50,7 @@ def verb_ratio(df):
 
 def noun_ratio(df):
     def _calc(sen):
+        print(sen)
         return len(sen.noun_phrases)
 
     return df['textblobs'].apply(_calc) / df['wordCount']
