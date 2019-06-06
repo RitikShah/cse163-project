@@ -1,6 +1,7 @@
-from sklearn.model_selection import train_test_split
+# from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.metrics import mean_squared_error
+from split import train, dev, test
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
@@ -10,20 +11,32 @@ def ask_question(s):
     return str(input(s)).upper()[0] == 'Y'
 
 
-def isolated_test(pickle):
-    data = pd.read_pickle(pickle)
-    data = data.loc[:, data.columns != 'id']
-    x = data.loc[:, data.columns != 'readBy']
-    y = data['readBy']
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.40)
+def remove_id(dset):
+    return dset.loc[:, dset.columns != 'id']
+
+
+def x_y(dset):
+    return dset.loc[:, dset.columns != 'readBy'], dset['readBy']
+
+
+def isolated_test(train, dev, test):
+    train = remove_id(train)
+    dev = remove_id(dev)
+    test = remove_id(test)
+
+    x_train, y_train = x_y(train)
+    x_dev, y_dev = x_y(dev)
+    x_test, y_test = x_y(test)
 
     if ask_question('test max_depth? [Y or N]: '):
-        plot_data_1 = []
+        min_mse = None
+        min_model = None
+        min_depth = 0
 
         # print('y_train', list(y_train)[0:3] + ['...'] + list(y_train)[-3:])
         # print('y_test', list(y_test)[0:3] + ['...'] + list(y_test)[-3:])
 
-        for i in range(1, 100):
+        for i in range(1, 100, 10):
             model = DecisionTreeRegressor(max_depth=i)
             model.fit(x_train, y_train)
 
@@ -36,18 +49,27 @@ def isolated_test(pickle):
             # print('train_predict', train_predict)
             # print('test_predict', test_predict)
 
-            plot_data_1.append({'max depth': i, 'mean square error': train_score,
-                                'predict type': 'trainning'})
-            plot_data_1.append({'max depth': i, 'mean square error': test_score,
-                                'predict type': 'testing'})
+            print({'max depth': i,
+                   'mse train': train_score,
+                   'mse test': test_score})
 
-        plot_data_1 = pd.DataFrame(plot_data_1)
-        test_data = plot_data_1[plot_data_1['predict type'] == 'testing']
-        print(plot_data_1.loc[test_data['mean square error'].idxmin()])
+            if min_mse is None or test_score < min_mse:
+                min_mse = test_score
+                min_depth = i
+                min_model = model
 
-        sns.relplot(kind='line', x='max depth', y='mean square error',
-                    hue='predict type', data=plot_data_1)
-        plt.savefig('max_depth.png')
+        # plot_data_1 = pd.DataFrame(plot_data_1)
+        # test_data = plot_data_1[plot_data_1['predict type'] == 'testing']
+        # print(plot_data_1.loc[test_data['mean square error'].idxmin()])
+        print(f'dev mse: {min_mse}')
+        print(f'depth: {min_depth}')
+
+        model = DecisionTreeRegressor(max_depth=min_depth)
+
+
+        # sns.relplot(kind='line', x='max depth', y='mean square error',
+        #  hue='predict type', data=plot_data_1)
+        # plt.savefig('max_depth.png')
 
     if ask_question('test min_samples_split? [Y or N]: '):
         plot_data_2 = []
@@ -215,12 +237,12 @@ def focused_test(pickle):
     data = data.loc[:, data.columns != 'id']
     x = data.loc[:, data.columns != 'readBy']
     y = data['readBy']
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.40)
-    for i in range()
+    # x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.40)
+    # for i in range()
 
 
 def main():
-    isolated_test('pickle/featured.pkl')
+    isolated_test(train(), dev(), test())
 
 
 if __name__ == "__main__":
