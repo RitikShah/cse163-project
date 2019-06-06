@@ -11,6 +11,7 @@ import logging
 import sys
 
 logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 
 DATA_FILE = 'data/freecodecamp_casual_chatroom.csv'
@@ -19,14 +20,14 @@ DATA_FILE = 'data/freecodecamp_casual_chatroom.csv'
 def do_features(data):
     start = time()
     out = get_features(data)
-    logging.debug(f'features took: {round(time() - start, 3)}s')
+    logger.debug(f'features took: {round(time() - start, 3)}s')
     return out
 
 
 def do_clean(data):
     start = time()
     out = clean(data)
-    logging.debug(f'cleaning took: {round(time() - start, 3)}s')
+    logger.debug(f'cleaning took: {round(time() - start, 3)}s')
     return out
 
 
@@ -41,12 +42,12 @@ def ask_question(s):
 def main():
     if ask_question('Use any stored pickles? [Y or N]: '):
         pkl = str(input('Which pickle? [Clean] or [Feature] data? ')).upper()
-        logging.info('unpickling')
+        logger.info('unpickling')
         if pkl == 'CLEAN':
             cleaned = pd.read_pickle('cleaned.pkl')
             # cleaned = sample(cleaned, 0.1)
             data = do_features(cleaned)
-            logging.info('saving to featured.pkl')
+            logger.info('saving to featured.pkl')
         elif pkl == 'FEATURE':
             data = pd.read_pickle('featured.pkl')
         else:
@@ -57,7 +58,7 @@ def main():
         # cleaned.to_pickle('cleaned.pkl')
         cleaned = sample(cleaned, 0.1)
         data = do_features(cleaned)
-        logging.info('saving to pickle')
+        logger.info('saving to pickle')
 
     data.to_pickle('featured.pkl')  # pickle for future usage
 

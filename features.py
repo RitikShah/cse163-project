@@ -2,6 +2,8 @@ from textblob import TextBlob
 import numpy as np
 import logging
 
+logger = logging.getLogger(__name__)
+
 ADJS = r'(JJR)|(JJS)|(JJ)'
 VERBS = r'(VBD)|(VBG)|(VBN)|(VBP)|(VBZ)|(VB)'
 NOUNS = r'(NNPS)|(NNP)|(NNS)|(NN)'
@@ -62,9 +64,9 @@ def fix_infs(df, col):
 
 
 def get_features(features):
-    logging.info('getting features from text and text_clean')
+    logger.info('getting features from text and text_clean')
     features = features[['text', 'text_clean', 'mentions',
-                         'urls', 'id', 'readBy', 'sent']]  # expand on
+                         'urls', 'id', 'readBy']]  # expand on
     feature_columns = ['polarity', 'subjectivity',
                        'wordCount', 'avgWordLength',
                        'adjRatio', 'verbRatio', 'nounRatio',
@@ -72,54 +74,54 @@ def get_features(features):
                        'exclamationCount', 'questionCount']
 
     # making textblobs
-    logging.debug('preprocessing textblobs')
-    logging.debug('  textblobs for normal text')
+    logger.debug('preprocessing textblobs')
+    logger.debug('  textblobs for normal text')
     features['textblobs'] = transform(features, 'text').apply(
         lambda blob: ' '.join([x[1] for x in blob.tags])
     )
-    logging.debug('  textblobs for clean text')
+    logger.debug('  textblobs for clean text')
     features['textblobs_clean'] = transform(features, 'text_clean')
 
-    logging.debug('calculating polarity and subjectivity')
+    logger.debug('calculating polarity and subjectivity')
     # sentiment features
-    logging.debug('  pol')
+    logger.debug('  pol')
     features['polarity'] = polarity(features['textblobs_clean'])
-    logging.debug('  sub')
+    logger.debug('  sub')
     features['subjectivity'] = subjectivity(features['textblobs_clean'])
 
-    logging.debug('calculating word count')
+    logger.debug('calculating word count')
     # word count
     features['wordCount'] = word_count(features['text'])
 
     # average word length
-    logging.debug('calculating avg word length')
+    logger.debug('calculating avg word length')
     features['avgWordLength'] = avg_word_length(features)
     fix_infs(features, 'avgWordLength')
 
-    logging.debug('calculating ratios')
+    logger.debug('calculating ratios')
     # ratios
-    logging.debug('  adj')
+    logger.debug('  adj')
     features['adjRatio'] = adj_ratio(features)
     fix_infs(features, 'adjRatio')
 
-    logging.debug('  verb')
+    logger.debug('  verb')
     features['verbRatio'] = verb_ratio(features)
     fix_infs(features, 'verbRatio')
 
-    logging.debug('  noun')
+    logger.debug('  noun')
     features['nounRatio'] = noun_ratio(features)
     fix_infs(features, 'nounRatio')
 
-    logging.debug('mentions and url count')
+    logger.debug('mentions and url count')
     features['mentionsCount'] = mentions(features['mentions'])
     features['urlsCount'] = urls(features['urls'])
 
-    logging.debug('exclamation and question counts')
+    logger.debug('exclamation and question counts')
     features['exclamationCount'] = exclamations(features['text'])
     features['questionCount'] = questions(features['text'])
 
-    logging.debug('done!')
-    return features.loc[:, feature_columns + ['id', 'readBy', 'sent']]
+    logger.debug('done!')
+    return features.loc[:, feature_columns + ['id', 'readBy']]
 
 
 if __name__ == '__main__':
@@ -127,6 +129,6 @@ if __name__ == '__main__':
     import clean_data
     data = clean_data.clean(clean_data.DATA_FILE)
     out = get_features(data)
-    logging.info('  done!')
+    logger.info('  done!')
     # print(out)
     # breakpoint()
