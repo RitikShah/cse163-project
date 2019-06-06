@@ -43,8 +43,8 @@ def main():
         pkl = str(input('Which pickle? [Clean] or [Feature] data? ')).upper()
         logging.info('unpickling')
         if pkl == 'CLEAN':
-            data = pd.read_pickle('cleaned.pkl')
-            cleaned = sample(data, 0.1)
+            cleaned = pd.read_pickle('cleaned.pkl')
+            # cleaned = sample(cleaned, 0.1)
             data = do_features(cleaned)
             logging.info('saving to featured.pkl')
         elif pkl == 'FEATURE':
@@ -53,9 +53,9 @@ def main():
             print('Invalid Answer. Quitting...')
             sys.exit()
     else:
-        data = do_clean(DATA_FILE)
-        data.to_pickle('cleaned.pkl')
-        cleaned = sample(data, 0.1)
+        cleaned = do_clean(DATA_FILE)
+        # cleaned.to_pickle('cleaned.pkl')
+        cleaned = sample(cleaned, 0.1)
         data = do_features(cleaned)
         logging.info('saving to pickle')
 
