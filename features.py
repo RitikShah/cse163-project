@@ -64,7 +64,7 @@ def fix_infs(df, col):
 def get_features(features):
     logging.info('getting features from text and text_clean')
     features = features[['text', 'text_clean', 'mentions',
-                         'urls', 'id', 'readBy']]  # expand on
+                         'urls', 'id', 'readBy', 'sent']]  # expand on
     feature_columns = ['polarity', 'subjectivity',
                        'wordCount', 'avgWordLength',
                        'adjRatio', 'verbRatio', 'nounRatio',
