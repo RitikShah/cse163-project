@@ -19,12 +19,6 @@ x = ml_data.loc[:, ml_data.columns != 'readBy']
 y = ml_data['readBy']
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
 
-<<<<<<< HEAD
-model = DecisionTreeRegressor(max_depth=5, min_samples_split=0.07,
-                              min_samples_leaf=0.09,
-                              min_weight_fraction_leaf=0.09,
-                              max_leaf_nodes=21, min_impurity_decrease=0.01)
-=======
 # hyper parameters were tested in an earlier program
 model = DecisionTreeRegressor(
     max_depth=DEPTH,
@@ -34,8 +28,6 @@ model = DecisionTreeRegressor(
     max_leaf_nodes=LEAF_NODES,
     min_impurity_decrease=IMPURITY_DECREASE
 )
-
->>>>>>> 2094e96bd82cd93635ab8f460e0444ad6e3aa1a1
 model.fit(x_train, y_train)
 
 a = list(model.predict(x_test))
