@@ -12,6 +12,8 @@ logger = logging.getLogger(__name__)
 def clean_sentence(sentence):
     return re.sub(r'[^A-Za-z\s]+', '', sentence.lower())
 
+
+def clean(file):
     # drop empty text
     logger.info('reading file into dataframe')
     if not DEBUG:
