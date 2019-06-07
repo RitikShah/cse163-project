@@ -11,8 +11,6 @@ logging.basicConfig(level=logging.DEBUG)
 def clean_sentence(sentence):
     return re.sub(r'[^A-Za-z\s]+', '', sentence.lower())
 
-
-def clean(file):
     # drop empty text
     logging.info('reading file into dataframe')
     if not DEBUG:
