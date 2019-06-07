@@ -209,7 +209,9 @@ INFO:__main__:testing max_depth=6, max_leaf_nodes=31
 test mse: 563.7689195566289
 
 
-======
+================================================================================
+Final accuracy score for freecodecamp dataset
+================================================================================
 INFO:__main__:splitting data
 INFO:__main__:creating regressor
 INFO:__main__:fitting model
@@ -218,6 +220,9 @@ INFO:__main__:calculating error
 MSE: 473.07926557519374
 Out of 1007569 , 468642 predicts are close
 
+================================================================================
+Final accuracy score for groupme dataset
+================================================================================
 INFO:__main__:splitting data
 INFO:__main__:creating regressor
 INFO:__main__:fitting model
