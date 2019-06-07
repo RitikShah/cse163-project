@@ -1,7 +1,6 @@
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.metrics import mean_squared_error
 from split import train, dev, test
-import pandas as pd
 import logging
 
 logging.basicConfig(level=logging.DEBUG)

@@ -8,4 +8,4 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 with open('model.pkl', 'rb') as file:
-	
+    
