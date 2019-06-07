@@ -56,7 +56,7 @@ def main():
     logger.info('calculating error')
     close = 0
     for i in range(len(a)):
-        if (a[i] >= (b[i] - 10)) & (a[i] <= (b[i] + 10)):
+        if (a[i] >= (b[i] - 2)) & (a[i] <= (b[i] + 2)):
             close += 1
 
     print(f'MSE: {mean_squared_error(y_test, model.predict(x_test))}')

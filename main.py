@@ -66,7 +66,5 @@ def main():
     if ask_question('Debug? [Y or N]: '):
         breakpoint()  # debug
 
-    
-
 if __name__ == "__main__":
     main()
