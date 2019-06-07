@@ -20,7 +20,7 @@ FEATURES = 0
 
 def main():
     logger.info('unpickling')
-    data = pd.read_pickle('featured.pkl')
+    data = pd.read_pickle('pickle/5m_pkls/featured.pkl')
     logger.info('dividing columns')
     ml_data = data = data.loc[:, data.columns != 'id']
     x = ml_data.loc[:, ml_data.columns != 'readBy']
