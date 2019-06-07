@@ -6,14 +6,17 @@ DATA_FILE = 'data/freecodecamp_casual_chatroom.csv'
 DEBUG = False
 
 logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 
 def clean(file):
     def clean_sentence(sentence):
         return re.sub(r'[^A-Za-z\s]+', '', sentence.lower())
 
+
+def clean(file):
     # drop empty text
-    logging.info('reading file into dataframe')
+    logger.info('reading file into dataframe')
     if not DEBUG:
         df = pd.read_csv(file, na_values=None, low_memory=False)
     else:
@@ -34,14 +37,14 @@ def clean(file):
                 'id',
                 'text'
             ]]
-    logging.info('cleaning text into text_clean')
+    logger.info('cleaning text into text_clean')
     df['text_clean'] = df['text'].apply(clean_sentence)
     return df
 
 
 def main():
     data = clean(DATA_FILE)
-    logging.info('pickling to cleaned.pkl')
+    logger.info('pickling to cleaned.pkl')
     data.to_pickle('cleaned.pkl')
 
 

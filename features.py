@@ -2,11 +2,13 @@ from textblob import TextBlob
 import numpy as np
 import logging
 
-logger = logging.getLogger(__name__)
-
 ADJS = r'(JJR)|(JJS)|(JJ)'
 VERBS = r'(VBD)|(VBG)|(VBN)|(VBP)|(VBZ)|(VB)'
 NOUNS = r'(NNPS)|(NNP)|(NNS)|(NN)'
+
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 
 def transform(df, col):

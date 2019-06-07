@@ -1,0 +1,227 @@
+================================================================================
+Isolated Tests
+First test larger range
+================================================================================
+
+INFO:__main__:testing max_depth
+{'max depth': 1, 'mse train': 536.4168410933227, 'mse test': 494.2621306817579}
+{'max depth': 11, 'mse train': 484.57595892360854, 'mse test': 502.4478945995245}
+{'max depth': 21, 'mse train': 430.52614197996274, 'mse test': 557.6352445537287}
+{'max depth': 31, 'mse train': 356.7027517113325, 'mse test': 653.3216888706089}
+{'max depth': 41, 'mse train': 293.54612896332543, 'mse test': 722.5090236421488}
+{'max depth': 51, 'mse train': 268.54675853031193, 'mse test': 754.045231993636}
+{'max depth': 61, 'mse train': 262.802155690167, 'mse test': 745.0252188977657}
+{'max depth': 71, 'mse train': 261.8068193056912, 'mse test': 749.3614546744469}
+{'max depth': 81, 'mse train': 261.68890197391266, 'mse test': 754.9878566373205}
+{'max depth': 91, 'mse train': 261.6775249915082, 'mse test': 793.9069092298754}
+dev mse: 494.2621306817579
+max_depth: 1
+test mse: 574.9609552469495
+
+INFO:__main__:testing max_leaf_nodes
+{'max_leaf_nodes': 2, 'mse train': 536.4168410933227, 'mse test': 494.2621306817579}
+{'max_leaf_nodes': 12, 'mse train': 525.7845351492819, 'mse test': 484.25367348474526}
+{'max_leaf_nodes': 22, 'mse train': 521.5200781389813, 'mse test': 483.83576756269616}
+{'max_leaf_nodes': 32, 'mse train': 520.7799462867941, 'mse test': 483.15161748926346}
+{'max_leaf_nodes': 42, 'mse train': 514.8746901458616, 'mse test': 492.18568189663836}
+{'max_leaf_nodes': 52, 'mse train': 510.8866774151693, 'mse test': 499.4215793854177}
+{'max_leaf_nodes': 62, 'mse train': 509.2905297021524, 'mse test': 496.49860977598377}
+{'max_leaf_nodes': 72, 'mse train': 502.3425005211662, 'mse test': 512.4290441889527}
+{'max_leaf_nodes': 82, 'mse train': 490.4508180520502, 'mse test': 509.2686948667341}
+{'max_leaf_nodes': 92, 'mse train': 486.2806820599205, 'mse test': 508.9663178173234}
+dev mse: 483.15161748926346
+max_leaf_nodes: 32
+test mse: 564.9275176795552
+
+INFO:__main__:testing min_impurity_decrease
+{'min_impurity_decrease': 1, 'mse train': 528.8827560617228, 'mse test': 486.8179925732336}
+{'min_impurity_decrease': 11, 'mse train': 543.0519750490777, 'mse test': 500.7772063828182}
+{'min_impurity_decrease': 21, 'mse train': 543.0519750490777, 'mse test': 500.7772063828182}
+{'min_impurity_decrease': 31, 'mse train': 543.0519750490777, 'mse test': 500.7772063828182}
+{'min_impurity_decrease': 41, 'mse train': 543.0519750490777, 'mse test': 500.7772063828182}
+{'min_impurity_decrease': 51, 'mse train': 543.0519750490777, 'mse test': 500.7772063828182}
+{'min_impurity_decrease': 61, 'mse train': 543.0519750490777, 'mse test': 500.7772063828182}
+{'min_impurity_decrease': 71, 'mse train': 543.0519750490777, 'mse test': 500.7772063828182}
+{'min_impurity_decrease': 81, 'mse train': 543.0519750490777, 'mse test': 500.7772063828182}
+{'min_impurity_decrease': 91, 'mse train': 543.0519750490777, 'mse test': 500.7772063828182}
+dev mse: 486.8179925732336
+min_impurity_decrease: 1
+test mse: 567.5273409762426
+
+================================================================================
+Second test in-depth range
+================================================================================
+
+
+INFO:__main__:testing max_depth
+{'max depth': 1, 'mse train': 536.4168410933227, 'mse test': 494.2621306817579}
+{'max depth': 2, 'mse train': 534.0838408379411, 'mse test': 491.9760498253516}
+{'max depth': 3, 'mse train': 532.2122730453681, 'mse test': 490.2087051941322}
+{'max depth': 4, 'mse train': 529.2110110515553, 'mse test': 487.3255004188785}
+{'max depth': 5, 'mse train': 525.820758226329, 'mse test': 483.7766730775097}
+{'max depth': 6, 'mse train': 524.6109066420926, 'mse test': 482.82951214939703}
+{'max depth': 7, 'mse train': 522.4549960873165, 'mse test': 481.58669495632824}
+{'max depth': 8, 'mse train': 516.483306493593, 'mse test': 485.11941165075604}
+{'max depth': 9, 'mse train': 510.7014672741563, 'mse test': 493.31017673941994}
+{'max depth': 10, 'mse train': 494.59118891234743, 'mse test': 497.9729993832984}
+{'max depth': 11, 'mse train': 484.57595892360854, 'mse test': 501.53521540365733}
+{'max depth': 12, 'mse train': 476.51246350089355, 'mse test': 508.1849762404388}
+{'max depth': 13, 'mse train': 471.25335810620896, 'mse test': 508.35403448995794}
+{'max depth': 14, 'mse train': 467.05455794669416, 'mse test': 504.54617153741964}
+{'max depth': 15, 'mse train': 459.60258416563164, 'mse test': 517.5443046591856}
+{'max depth': 16, 'mse train': 455.949599568117, 'mse test': 545.6007237988915}
+{'max depth': 17, 'mse train': 449.2738876471557, 'mse test': 519.0406722923562}
+{'max depth': 18, 'mse train': 444.3626245238877, 'mse test': 517.634472861538}
+{'max depth': 19, 'mse train': 440.6069889948597, 'mse test': 553.080178969562}
+{'max depth': 20, 'mse train': 435.5465694754882, 'mse test': 558.8558836543575}
+{'max depth': 21, 'mse train': 430.52667564887787, 'mse test': 547.1163818927304}
+{'max depth': 22, 'mse train': 424.5458176331676, 'mse test': 545.4241257885352}
+{'max depth': 23, 'mse train': 418.961664088271, 'mse test': 548.2746659335805}
+{'max depth': 24, 'mse train': 411.4874684956243, 'mse test': 603.6421142287738}
+dev mse: 481.58669495632824
+max_depth: 7 <-
+test mse: 562.7342102672714
+
+INFO:__main__:testing max_leaf_nodes
+{'max_leaf_nodes': 22, 'mse train': 521.5200781389813, 'mse test': 483.83576756269616}
+{'max_leaf_nodes': 23, 'mse train': 521.4094329920295, 'mse test': 483.7269533455262}
+{'max_leaf_nodes': 24, 'mse train': 521.3325692273494, 'mse test': 483.6545031123973}
+{'max_leaf_nodes': 25, 'mse train': 521.2566301089072, 'mse test': 483.5811512485276}
+{'max_leaf_nodes': 26, 'mse train': 521.1808300785276, 'mse test': 483.5009022893117}
+{'max_leaf_nodes': 27, 'mse train': 521.1083497488504, 'mse test': 483.41617247444805}
+{'max_leaf_nodes': 28, 'mse train': 521.038760605658, 'mse test': 483.33813878535926}
+{'max_leaf_nodes': 29, 'mse train': 520.9704504805493, 'mse test': 483.2639796266796}
+{'max_leaf_nodes': 30, 'mse train': 520.9045297624453, 'mse test': 483.22672384981234}
+{'max_leaf_nodes': 31, 'mse train': 520.8408624474802, 'mse test': 483.16699636842696}
+{'max_leaf_nodes': 32, 'mse train': 520.7799462867941, 'mse test': 483.15161748926346}
+{'max_leaf_nodes': 33, 'mse train': 520.505534671669, 'mse test': 483.151146091986}
+{'max_leaf_nodes': 34, 'mse train': 519.9391529926602, 'mse test': 483.151146091986}
+{'max_leaf_nodes': 35, 'mse train': 519.871352087933, 'mse test': 483.16152442995497}
+{'max_leaf_nodes': 36, 'mse train': 519.4227716855444, 'mse test': 484.61141021242867}
+{'max_leaf_nodes': 37, 'mse train': 518.9385163631575, 'mse test': 483.1484553547913}
+{'max_leaf_nodes': 38, 'mse train': 518.7633952402659, 'mse test': 486.25445070544083}
+{'max_leaf_nodes': 39, 'mse train': 516.8668628733919, 'mse test': 492.33587912719423}
+{'max_leaf_nodes': 40, 'mse train': 515.0046613165418, 'mse test': 492.3391906674541}
+{'max_leaf_nodes': 41, 'mse train': 514.9295531499846, 'mse test': 492.1744330187325}
+{'max_leaf_nodes': 42, 'mse train': 514.8746901458616, 'mse test': 489.2427906972354}
+dev mse: 483.1484553547913
+max_leaf_nodes: 37 <-
+test mse: 564.9519919822097
+INFO:__main__:testing min_impurity_decrease
+{'min_impurity_decrease': 1, 'mse train': 528.8827560617228, 'mse test': 486.8179925732336}
+{'min_impurity_decrease': 2, 'mse train': 536.4168410933227, 'mse test': 494.2621306817579}
+{'min_impurity_decrease': 3, 'mse train': 536.4168410933227, 'mse test': 494.2621306817579}
+{'min_impurity_decrease': 4, 'mse train': 536.4168410933227, 'mse test': 494.2621306817579}
+{'min_impurity_decrease': 5, 'mse train': 536.4168410933227, 'mse test': 494.2621306817579}
+{'min_impurity_decrease': 6, 'mse train': 536.4168410933227, 'mse test': 494.2621306817579}
+{'min_impurity_decrease': 7, 'mse train': 543.0519750490777, 'mse test': 500.7772063828182}
+{'min_impurity_decrease': 8, 'mse train': 543.0519750490777, 'mse test': 500.7772063828182}
+{'min_impurity_decrease': 9, 'mse train': 543.0519750490777, 'mse test': 500.7772063828182}
+{'min_impurity_decrease': 10, 'mse train': 543.0519750490777, 'mse test': 500.7772063828182}
+{'min_impurity_decrease': 11, 'mse train': 543.0519750490777, 'mse test': 500.7772063828182}
+{'min_impurity_decrease': 12, 'mse train': 543.0519750490777, 'mse test': 500.7772063828182}
+{'min_impurity_decrease': 13, 'mse train': 543.0519750490777, 'mse test': 500.7772063828182}
+{'min_impurity_decrease': 14, 'mse train': 543.0519750490777, 'mse test': 500.7772063828182}
+{'min_impurity_decrease': 15, 'mse train': 543.0519750490777, 'mse test': 500.7772063828182}
+{'min_impurity_decrease': 16, 'mse train': 543.0519750490777, 'mse test': 500.7772063828182}
+{'min_impurity_decrease': 17, 'mse train': 543.0519750490777, 'mse test': 500.7772063828182}
+{'min_impurity_decrease': 18, 'mse train': 543.0519750490777, 'mse test': 500.7772063828182}
+{'min_impurity_decrease': 19, 'mse train': 543.0519750490777, 'mse test': 500.7772063828182}
+{'min_impurity_decrease': 20, 'mse train': 543.0519750490777, 'mse test': 500.7772063828182}
+{'min_impurity_decrease': 21, 'mse train': 543.0519750490777, 'mse test': 500.7772063828182}
+{'min_impurity_decrease': 22, 'mse train': 543.0519750490777, 'mse test': 500.7772063828182}
+{'min_impurity_decrease': 23, 'mse train': 543.0519750490777, 'mse test': 500.7772063828182}
+{'min_impurity_decrease': 24, 'mse train': 543.0519750490777, 'mse test': 500.7772063828182}
+dev mse: 486.8179925732336
+min_impurity_decrease: 1  <-
+test mse: 567.5273409762426
+
+================================================================================
+Focused Tests
+================================================================================
+
+INFO:__main__:focused test 1
+INFO:__main__:testing max_depth=7, max_leaf_nodes=37, min_impurity_decrease=1
+{'mse train': 519.791792795507, 'mse dev': 484.1565226696946}
+test mse: 565.4849879307513
+
+INFO:__main__:focused test 2
+INFO:__main__:testing max_depth=7, max_leaf_nodes=37
+{'mse train': 519.791792795507, 'mse dev': 484.1565226696946}
+test mse: 565.4849879307513
+
+INFO:__main__:focused test 3
+INFO:__main__:testing max_leaf_nodes with max_depth=7
+{'max_leaf_nodes': 22, 'mse train': 521.8822235284474, 'mse test': 483.4002963705076}
+{'max_leaf_nodes': 23, 'mse train': 521.8062844100051, 'mse test': 483.3269445066378}
+{'max_leaf_nodes': 24, 'mse train': 521.7304843796254, 'mse test': 483.24669554742184}
+{'max_leaf_nodes': 25, 'mse train': 521.6580040499481, 'mse test': 483.1619657325582}
+{'max_leaf_nodes': 26, 'mse train': 521.5884149067557, 'mse test': 483.0839320434696}
+{'max_leaf_nodes': 27, 'mse train': 521.5201047816472, 'mse test': 483.00977288478987}
+{'max_leaf_nodes': 28, 'mse train': 521.4541840635433, 'mse test': 482.9725171079225}
+{'max_leaf_nodes': 29, 'mse train': 521.3905167485781, 'mse test': 482.9127896265372}
+{'max_leaf_nodes': 30, 'mse train': 521.3296005878918, 'mse test': 482.89741074737367}
+{'max_leaf_nodes': 31, 'mse train': 521.0551889727668, 'mse test': 482.8969393500963}
+{'max_leaf_nodes': 32, 'mse train': 520.488807293758, 'mse test': 482.8969393500963}
+{'max_leaf_nodes': 33, 'mse train': 520.4210063890308, 'mse test': 482.90731768806523}
+{'max_leaf_nodes': 34, 'mse train': 519.9724259866421, 'mse test': 484.3572034705389}
+{'max_leaf_nodes': 35, 'mse train': 519.8973178200847, 'mse test': 484.2467865710271}
+{'max_leaf_nodes': 36, 'mse train': 519.8424548159617, 'mse test': 484.20369469972286}
+{'max_leaf_nodes': 37, 'mse train': 519.791792795507, 'mse test': 484.1565226696946}
+{'max_leaf_nodes': 38, 'mse train': 519.6878160786915, 'mse test': 484.0650145199605}
+{'max_leaf_nodes': 39, 'mse train': 519.6385171834166, 'mse test': 484.01839251625535}
+{'max_leaf_nodes': 40, 'mse train': 519.5918718551611, 'mse test': 483.97624660296196}
+{'max_leaf_nodes': 41, 'mse train': 519.5292552632206, 'mse test': 483.93145609826274}
+{'max_leaf_nodes': 42, 'mse train': 519.4865774969337, 'mse test': 483.8791496627104}
+dev mse: 482.8969393500963
+max_leaf_nodes: 31
+test mse: 564.9569316931289
+
+INFO:__main__:focused test 4
+INFO:__main__:testing max_depth with max_leaf_nodes=37
+{'max depth': 1, 'mse train': 534.0838408379411, 'mse test': 491.9760498253516}
+{'max depth': 2, 'mse train': 532.2122730453681, 'mse test': 490.2087051941322}
+{'max depth': 3, 'mse train': 529.2110110515553, 'mse test': 487.3255004188785}
+{'max depth': 4, 'mse train': 525.820758226329, 'mse test': 483.7766730775097}
+{'max depth': 5, 'mse train': 524.7479171040579, 'mse test': 482.91675705495123}
+{'max depth': 6, 'mse train': 523.1013906360658, 'mse test': 481.99006657778364}
+{'max depth': 7, 'mse train': 519.791792795507, 'mse test': 484.1565226696946}
+{'max depth': 8, 'mse train': 518.9385163631575, 'mse test': 483.1484553547913}
+{'max depth': 9, 'mse train': 518.9385163631575, 'mse test': 488.9798970043871}
+{'max depth': 10, 'mse train': 518.9385163631575, 'mse test': 483.1484553547913}
+{'max depth': 11, 'mse train': 518.9385163631575, 'mse test': 486.0370058049842}
+{'max depth': 12, 'mse train': 518.9385163631575, 'mse test': 488.9798970043871}
+{'max depth': 13, 'mse train': 518.9385163631575, 'mse test': 486.09134655419416}
+{'max depth': 14, 'mse train': 518.9385163631575, 'mse test': 488.9798970043871}
+{'max depth': 15, 'mse train': 518.9385163631575, 'mse test': 486.0370058049842}
+{'max depth': 16, 'mse train': 518.9385163631575, 'mse test': 483.1484553547913}
+{'max depth': 17, 'mse train': 518.9385163631575, 'mse test': 483.1484553547913}
+{'max depth': 18, 'mse train': 518.9385163631575, 'mse test': 488.9798970043871}
+{'max depth': 19, 'mse train': 518.9385163631575, 'mse test': 488.9798970043871}
+{'max depth': 20, 'mse train': 518.9385163631575, 'mse test': 483.1484553547913}
+dev mse: 481.99006657778364
+max_depth: 6
+test mse: 563.4446436413698
+
+INFO:__main__:focused test 5
+INFO:__main__:testing max_depth=6, max_leaf_nodes=31
+{'mse train': 523.4348945624193, 'mse dev': 482.29175179592727}
+test mse: 563.7689195566289
+
+
+======
+INFO:__main__:splitting data
+INFO:__main__:creating regressor
+INFO:__main__:fitting model
+INFO:__main__:making predictions about test set
+INFO:__main__:calculating error
+MSE: 473.07926557519374
+Out of 1007569 , 468642 predicts are close
+
+INFO:__main__:splitting data
+INFO:__main__:creating regressor
+INFO:__main__:fitting model
+INFO:__main__:making predictions about test set
+INFO:__main__:calculating error
+MSE: 3.040478103988279
+Out of 3530 , 3526 predicts are close

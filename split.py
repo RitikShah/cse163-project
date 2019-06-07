@@ -27,6 +27,7 @@ def main():
 
     logger.info('splitting into sets')
     data = data.sample(frac=1.0).reset_index(drop=True)
+    # data = data.loc[:, data.columns != 'wordCount']
     rows = len(data)
     train, dev, test = np.split(data, [int(.6 * rows), int(.8 * rows)])
 
