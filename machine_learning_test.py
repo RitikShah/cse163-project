@@ -197,7 +197,7 @@ def isolated_test(train, dev, test):
         min_depth = 0
 
         for i in range(2, 100, 10):
-            model = DecisionTreeRegressor(max_leaf_nodest=i)
+            model = DecisionTreeRegressor(max_leaf_nodes=i)
             model.fit(x_train, y_train)
 
             train_predict = model.predict(x_train)
