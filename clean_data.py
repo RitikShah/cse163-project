@@ -9,8 +9,9 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 
-def clean_sentence(sentence):
-    return re.sub(r'[^A-Za-z\s]+', '', sentence.lower())
+def clean(file):
+    def clean_sentence(sentence):
+        return re.sub(r'[^A-Za-z\s]+', '', sentence.lower())
 
 
 def clean(file):
