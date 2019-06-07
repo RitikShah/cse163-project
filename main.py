@@ -45,7 +45,7 @@ def main():
         logger.info('unpickling')
         if pkl == 'CLEAN':
             cleaned = pd.read_pickle('cleaned.pkl')
-            # cleaned = sample(cleaned, 0.1)
+            cleaned = sample(cleaned, 1)
             data = do_features(cleaned)
             logger.info('saving to featured.pkl')
         elif pkl == 'FEATURE':
@@ -55,8 +55,8 @@ def main():
             sys.exit()
     else:
         cleaned = do_clean(DATA_FILE)
-        # cleaned.to_pickle('cleaned.pkl')
-        cleaned = sample(cleaned, 0.1)
+        cleaned.to_pickle('cleaned.pkl')
+        cleaned = sample(cleaned, 1)
         data = do_features(cleaned)
         logger.info('saving to pickle')
 
@@ -66,6 +66,7 @@ def main():
     if ask_question('Debug? [Y or N]: '):
         breakpoint()  # debug
 
+    
 
 if __name__ == "__main__":
     main()
