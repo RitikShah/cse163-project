@@ -7,15 +7,12 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 
-FEATURED_PKL = 'pickles/featured.pkl'
-
 
 def final_machine_learning():
     """ making predictions for every messages in the testing data """
     if ask_question('Use pickle? [Y or N]: '):
         data = pd.read_pickle('pickles/analysis.pkl')
     else:
-        train, _, test = split(unpickle(FEATURED_PKL))
         DEPTH_value = DEPTH
         LEAF_NODES_value = LEAF_NODES
         test_set = remove_col(remove_col(test, 'id'), 'fromUser.id')
