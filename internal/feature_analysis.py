@@ -1,6 +1,6 @@
 from .utils import remove_col, x_y, ask_question
 from .machine_learning import DEPTH, LEAF_NODES
-from .split import train, test
+from .split import get_train, get_test
 
 from sklearn.tree import DecisionTreeRegressor
 import matplotlib.pyplot as plt
@@ -15,10 +15,10 @@ def final_machine_learning():
     else:
         DEPTH_value = DEPTH
         LEAF_NODES_value = LEAF_NODES
-        test_set = remove_col(test(), 'id')
-        test_set = remove_col(test(), 'fromUser.id')
-        train_set = remove_col(train(), 'id')
-        train_set = remove_col(train(), 'fromUser.id')
+        test_set = remove_col(get_test(), 'id')
+        test_set = remove_col(get_test(), 'fromUser.id')
+        train_set = remove_col(get_train(), 'id')
+        train_set = remove_col(get_train(), 'fromUser.id')
         x_train, y_train = x_y(train_set)
         x_test, y_test = x_y(test_set)
         model = DecisionTreeRegressor(
@@ -27,7 +27,7 @@ def final_machine_learning():
                 )
         model.fit(x_train, y_train)
         readBy_predict = model.predict(x_test)
-        data = test()
+        data = get_test()
         # breakpoint()
         data['readBy_predict'] = readBy_predict
         data.to_pickle('pickle/analysis.pkl')
