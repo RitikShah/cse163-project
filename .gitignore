@@ -12,10 +12,8 @@ groupme/
 graphs/
 *.pdf
 *.gv
-*.txt
 decision\ trees/
 .vscode/
-log.txt
 models/
 *.png
 full_pkls/
