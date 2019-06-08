@@ -218,7 +218,7 @@ INFO:__main__:fitting model
 INFO:__main__:making predictions about test set
 INFO:__main__:calculating error
 MSE: 473.07926557519374
-Out of 1007569 , 468642 predicts are close
+Out of 1007569 , 468642 predicts are close (+- 10)
 
 ================================================================================
 Final accuracy score for groupme dataset
@@ -229,4 +229,4 @@ INFO:__main__:fitting model
 INFO:__main__:making predictions about test set
 INFO:__main__:calculating error
 MSE: 3.040478103988279
-Out of 3530 , 3526 predicts are close
+Out of 3530 , 3096 predicts are close (+- 2)

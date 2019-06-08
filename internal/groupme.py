@@ -1,8 +1,9 @@
-from clean_data import clean_sentence
+from .clean_data import clean_sentence
+
 import pandas as pd
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 DATA_FILE = 'groupme/message.json'
 

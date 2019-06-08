@@ -1,8 +1,9 @@
-from machine_learning_test import remove_id, x_y, ask_question
+from .utils import remove_col, x_y, ask_question
+
 from sklearn.tree import DecisionTreeRegressor
 from machine_learning import DEPTH, LEAF_NODES
-import matplotlib.pyplot as plt
 from split import train, test
+import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 
@@ -10,12 +11,14 @@ import pandas as pd
 def final_machine_learning():
     # making predictions for every messages in the testing data
     if ask_question('use pickle? [Y or N]: '):
-        data = pd.read_pickle('pickle/5m_pkls/analysis.pkl')
+        data = pd.read_pickle('pickle/analysis.pkl')
     else:
         DEPTH_value = DEPTH
         LEAF_NODES_value = LEAF_NODES
-        test_set = remove_id(test())
-        train_set = remove_id(train())
+        test_set = remove_col(test(), 'id')
+        test_set = remove_col(test(), 'fromUser.id')
+        train_set = remove_col(train(), 'id')
+        train_set = remove_col(train(), 'fromUser.id')
         x_train, y_train = x_y(train_set)
         x_test, y_test = x_y(test_set)
         model = DecisionTreeRegressor(
@@ -27,7 +30,7 @@ def final_machine_learning():
         data = test()
         # breakpoint()
         data['readBy_predict'] = readBy_predict
-        data.to_pickle('pickle/5m_pkls/analysis.pkl')
+        data.to_pickle('pickle/analysis.pkl')
     return data
 
 

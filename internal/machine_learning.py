@@ -1,13 +1,14 @@
+from .utils import remove_col, x_y
+from .split import get_train, get_test
+
 from sklearn.tree import DecisionTreeRegressor
-from machine_learning_test import remove_id, x_y
 from sklearn.metrics import mean_squared_error
 from sklearn.tree import export_graphviz
-from split import train, test
 import graphviz
 import logging
 import pickle
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 # TODO: throw this in a function pls
 
@@ -22,6 +23,7 @@ LEAF_NODES = 31
 
 
 def plot_tree(model, X, y):
+    """ From Hunter's lectures """
     dot_data = export_graphviz(model, out_file=None,
                                feature_names=X.columns,
                                class_names=y.unique(),
@@ -30,16 +32,27 @@ def plot_tree(model, X, y):
     return graphviz.Source(dot_data)
 
 
-def main():
-    logger.info('unpickling')
-    train_set = remove_id(train())
-    test_set = remove_id(test())
+def calc_close(num, a, b):
+    close = 0
+    for i in range(len(a)):
+        if (a[i] >= (b[i] - 2)) & (a[i] <= (b[i] + 2)):
+            close += 1
+
+    return close
+
+
+def ml(train, test, num):
+    logger.info('removing id col')
+    train = remove_col(train, 'id')
+    train = remove_col(train, 'fromUser.id')
+    test = remove_col(test, 'id')
+    test = remove_col(test, 'fromUser.id')
 
     logger.info('splitting data')
-    x_train, y_train = x_y(train_set)
-    x_test, y_test = x_y(test_set)
+    x_train, y_train = x_y(train, 'readBy')
+    x_test, y_test = x_y(test, 'readBy')
 
-    logger.info('creating regressor')
+    logger.info('creating model regressor')
     # hyper parameters were tested in an earlier program
     model = DecisionTreeRegressor(
         max_depth=DEPTH,
@@ -49,23 +62,28 @@ def main():
     logger.info('fitting model')
     model.fit(x_train, y_train)
 
-    logger.info('making predictions about test set')
-    a = list(model.predict(x_test))
-    b = list(y_test)
+    logger.info('making predictions about the test set')
+    predicts = model.predict(x_test)
 
     logger.info('calculating error')
-    close = 0
-    for i in range(len(a)):
-        if (a[i] >= (b[i] - 2)) & (a[i] <= (b[i] + 2)):
-            close += 1
+    close = calc_close(num, list(y_test), list(predicts))
 
-    print(f'MSE: {mean_squared_error(y_test, model.predict(x_test))}')
-    print('Out of', str(len(b)), ',', str(close), 'predicts are close')
+    print()
+    print(f'MSE: {mean_squared_error(y_test, predicts)}')
+    print(
+        f'Out of {len(list(predicts))}, {close} predicts are close (+- {num})'
+    )
 
     with open('model.pkl', 'wb') as file:
         pickle.dump(model, file)
 
     plot_tree(model, x_train.append(x_test), y_train.append(y_test)).view()
+
+
+def main():
+    train = get_train()
+    test = get_test()
+    ml(train, test)
 
 
 if __name__ == '__main__':

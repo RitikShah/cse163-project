@@ -3,81 +3,100 @@
 # ~ Ritik Shah and Winston Chen ~
 # =============================================================================
 
-from features import get_features
-from clean_data import clean
+from internal.main_text import INTRO, INTRO_INPUT, GROUPME, FREECODECAMP
+from internal.features import get_features
+from internal.machine_learning import ml
+from internal.clean_data import clean
+from internal.utils import unpickle
+from internal.split import split
+
 from time import time
-import pandas as pd
 import logging
 import sys
 
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger('main')
 
 
 DATA_FILE = 'data/freecodecamp_casual_chatroom.csv'
-INTRO = (
-    '\n'
-    'Analyzing Message Popularity in Group Chats\n'
-    '-- Ritik Shah and Winston Chen\n'
-    '\n'
-    "This program analyzes the freecodecamp dataset's messages\n"
-    'Type the number associated with the action\n'
-    '1. Run everything from scratch\n'
-    "    This runs the entire program from scratch without reading pkls\n"
-    '    Warning, can take a sigificant amount of time.\n'
-    '2. Read from cleaned.pkl\n'
-    '    cleaned.pkl is a serialized file that contains the csv data cleaned\n'
-    '     into a pandas DataFrame.\n'
-    '3. Read from features.pkl\n'
-    '    features.pkl is a serialized file that contains the data with the\n'
-    '     text processed features as columns.\n'
-    '4. Run the machine learning algorithm\n'
-    '    Reads in the pickle files and produces the accuracy score rating\n'
-    '     the model.\n'
-    '5. Run the machine learning testing suite.\n'
-    "    This file was ran independently to determine the model's\n"
-    '     hyperparameters.\n'
-    '\n'
-    'The latter numbers will run best if you have already generated the\n'
-    ' pickled files and wish to rerun a certain part of the program.\n'
-    'When a number is chosen, it will continue to roll through the rest it\n'
-    ' without user input.\n'
-    '\n'
-)
 
-INTRO_INPUT = 'Please choose a number (anything else will quit the program: '
+# pickles
+CLEANED_PKL = 'pickles/cleaned.pkl'
+FEATURED_PKL = 'pickles/featured.pkl'
+GROUPME_PKL = 'pickles/groupme.pkl'
 
-
-def do_features(data):
-    start = time()
-    out = get_features(data)
-    logger.debug(f'features took: {round(time() - start, 3)}s')
-    return out
-
-
-def do_clean(data):
-    start = time()
-    out = clean(data)
-    logger.debug(f'cleaning took: {round(time() - start, 3)}s')
-    return out
-
-
-def sample(data, frac):
-    return data.sample(frac=frac).reset_index(drop=True)
+TO_PERCENT = {1: 1, 2: 0.1, 3: 0.01}
 
 
 def ask_question(s):
     return str(input(s)).upper()[0] == 'Y'
 
 
-def main():
-    print(INTRO)
+def get_input():
     try:
-        action = int(input(INTRO_INPUT))
-    except ValueError:
-        print('Number not found. Quitting...')
-        sys.exit()
+        inn = str(input(INTRO_INPUT))
+    except KeyboardInterrupt:
+        goodbye()
 
+    return inn.lower().strip()
+
+
+def goodbye():
+    print('\nGoodbye')
+    sys.exit()
+
+
+def main():
+    print('\n')
+    print(INTRO)
+    action = get_input()
+
+    if action == 'groupme':
+        print(GROUPME)
+        action = get_input()
+        if action != '':
+            goodbye()
+
+        train, _, test = split(unpickle(GROUPME_PKL))
+        ml(train, test, 2)
+        goodbye()
+
+    elif action == 'freecodecamp':
+        print(FREECODECAMP)
+        action = get_input()
+        try:
+            action = int(action)
+        except ValueError:
+            goodbye()
+
+        if action not in TO_PERCENT:
+            goodbye()
+
+        start = time()
+
+        data = clean(DATA_FILE, TO_PERCENT[action])
+        data = data.sample(frac=1.0).reset_index(drop=True)
+
+        logger.info(f'saving to pickle: {CLEANED_PKL}')
+        data.to_pickle(CLEANED_PKL)
+
+        data = get_features(data)
+        logger.info(f'saving to pickle: {FEATURED_PKL}')
+        data.to_pickle(FEATURED_PKL)
+
+        train, _, test = split(data)
+        ml(train, test, 10)
+
+        logger.info(f'Time Elapsed: {round(time() - start, 3)}s')
+
+        print('Press enter to quit')
+        get_input()
+        goodbye()
+
+    else:
+        goodbye()
+
+    """
     if ask_question('Use any stored pickles? [Y or N]: '):
         pkl = str(input('Which pickle? [Clean] or [Feature] data? ')).upper()
         logger.info('unpickling')
@@ -103,6 +122,7 @@ def main():
     print(data)  # for now
     if ask_question('Debug? [Y or N]: '):
         breakpoint()  # debug
+    """
 
 
 if __name__ == "__main__":

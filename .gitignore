@@ -9,3 +9,8 @@ Git tutorial.docx
 convert.py
 *.pkl
 groupme/
+data/
+log.txt
+models/
+*.pdf
+*.gv
