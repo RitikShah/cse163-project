@@ -1,7 +1,6 @@
 from random import random
 import pandas as pd
 import logging
-import json
 import re
 
 DATA_FILE = 'data/freecodecamp_casual_chatroom_anon.csv'
