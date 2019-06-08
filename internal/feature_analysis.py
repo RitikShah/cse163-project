@@ -141,6 +141,7 @@ def main():
     rank = process_plot_data(data)
     top_data = get_top_data(rank, data)
     bot_data = get_bot_data(rank, data)
+    # breakpoint()
     if ask_question('plot excalmation count? [Y or N]: '):
         plot_top_excalamation_count(top_data)
         plot_bot_exclamation_count(bot_data)
