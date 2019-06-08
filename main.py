@@ -27,6 +27,7 @@ GROUPME_PKL = 'pickles/groupme.pkl'
 
 
 def groupme():
+    """ Runs the groupme set """
     print(GROUPME)
     action = get_input()
     if action != '':
@@ -38,6 +39,7 @@ def groupme():
 
 
 def freecodecamp():
+    """ Handles options surrounding the primary dataset """
     print(FREECODECAMP)
     action = get_input()
     try:
@@ -56,6 +58,7 @@ def freecodecamp():
 
 
 def scratch(percent):
+    """ Handles running the program from scratch """
     data = clean(DATA_FILE, percent)
     data = data.sample(frac=1.0).reset_index(drop=True)
 
@@ -71,6 +74,7 @@ def scratch(percent):
 
 
 def percent100():
+    """ """
     scratch(1.00)
 
 
