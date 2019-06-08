@@ -9,18 +9,13 @@ Git tutorial.docx
 convert.py
 *.pkl
 groupme/
-<<<<<<< HEAD
 graphs/
 *.pdf
 *.gv
 *.txt
 decision\ trees/
 .vscode/
-=======
 data/
 log.txt
 models/
-*.pdf
-*.gv
 *.png
->>>>>>> d708161f6cc285b23ec59cb010852202d40fbd87
