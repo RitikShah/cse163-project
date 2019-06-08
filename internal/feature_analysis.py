@@ -1,21 +1,24 @@
-from machine_learning_test import remove_id, x_y, ask_question
+from .utils import remove_col, x_y, ask_question
+
 from sklearn.tree import DecisionTreeRegressor
 from machine_learning import DEPTH, LEAF_NODES
-import matplotlib.pyplot as plt
 from split import train, test
+import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 
 
 def final_machine_learning():
-    # making predictions for every messages in the testing data
+    """ making predictions for every messages in the testing data """
     if ask_question('use pickle? [Y or N]: '):
-        data = pd.read_pickle('pickle/5m_pkls/analysis.pkl')
+        data = pd.read_pickle('pickle/analysis.pkl')
     else:
         DEPTH_value = DEPTH
         LEAF_NODES_value = LEAF_NODES
-        test_set = remove_id(test())
-        train_set = remove_id(train())
+        test_set = remove_col(test(), 'id')
+        test_set = remove_col(test(), 'fromUser.id')
+        train_set = remove_col(train(), 'id')
+        train_set = remove_col(train(), 'fromUser.id')
         x_train, y_train = x_y(train_set)
         x_test, y_test = x_y(test_set)
         model = DecisionTreeRegressor(
@@ -27,11 +30,12 @@ def final_machine_learning():
         data = test()
         # breakpoint()
         data['readBy_predict'] = readBy_predict
-        data.to_pickle('pickle/5m_pkls/analysis.pkl')
+        data.to_pickle('pickle/analysis.pkl')
     return data
 
 
 def process_plot_data(data):
+    """ Processes plot data """
     data['count'] = 1
     count = data.groupby('fromUser.id')['count'].sum()
     users = data.groupby('fromUser.id')['readBy_predict'].mean()
@@ -44,7 +48,8 @@ def process_plot_data(data):
 
 
 def get_top_data(active_rank, data):
-    top_5_list = list(active_rank.loc[0:9, 'fromUser.id'])
+    """ Grabs the top 5 users """
+    top_5_list = list(active_rank.loc[0:4, 'fromUser.id'])
     top_5_df = data[data['fromUser.id'].isin(top_5_list)].reset_index()
     top_5_df_mean = top_5_df
     top_exclamation_mean = top_5_df.groupby('fromUser.id')['readBy_predict'] \
@@ -56,7 +61,8 @@ def get_top_data(active_rank, data):
 
 
 def get_bot_data(active_rank, data):
-    bottom_5_list = list(active_rank.loc[len(active_rank) - 10:
+    """ Grabs the bottom 5 users """
+    bottom_5_list = list(active_rank.loc[len(active_rank) - 5:
                                          len(active_rank), 'fromUser.id'])
     bottom_5_df = data[data['fromUser.id'].isin(bottom_5_list)].reset_index()
     bot_exclamation_mean = bottom_5_df \
@@ -69,6 +75,7 @@ def get_bot_data(active_rank, data):
 
 
 def plot_top_excalamation_count(data):
+    """ Plots various ratios about top and bottom users """
     plt.figure(1)
     sns.catplot(x='fromUser.id', y='exclamationCount', hue='readBy_predict',
                 data=data, kind="bar", legend_out=True)
@@ -78,6 +85,7 @@ def plot_top_excalamation_count(data):
 
 
 def plot_bot_exclamation_count(data):
+    """ Plots various ratios about top and bottom users """
     plt.figure(2)
     sns.catplot(x='fromUser.id', y='exclamationCount', hue='readBy_predict',
                 data=data, kind="bar", legend_out=True)
@@ -87,6 +95,7 @@ def plot_bot_exclamation_count(data):
 
 
 def plot_top_noun_ratio(data):
+    """ Plots various ratios about top and bottom users """
     plt.figure(3)
     sns.catplot(x='fromUser.id', y='nounRatio', hue='readBy_predict',
                 data=data, kind="bar", legend_out=True)
@@ -96,6 +105,7 @@ def plot_top_noun_ratio(data):
 
 
 def plot_bot_noun_ratio(data):
+    """ Plots various ratios about top and bottom users """
     plt.figure(4)
     sns.catplot(x='fromUser.id', y='nounRatio', hue='readBy_predict',
                 data=data, kind="bar", legend_out=True)
@@ -105,6 +115,7 @@ def plot_bot_noun_ratio(data):
 
 
 def plot_top_urls_count(data):
+    """ Plots various ratios about top and bottom users """
     plt.figure(5)
     sns.catplot(x='fromUser.id', y='urlsCount', hue='readBy_predict',
                 data=data, kind="bar", legend_out=True)
@@ -114,6 +125,7 @@ def plot_top_urls_count(data):
 
 
 def plot_bot_urls_count(data):
+    """ Plots various ratios about top and bottom users """
     plt.figure(6)
     sns.catplot(x='fromUser.id', y='urlsCount', hue='readBy_predict',
                 data=data, kind="bar", legend_out=True)
@@ -123,6 +135,7 @@ def plot_bot_urls_count(data):
 
 
 def main():
+    """ Runs entire plotting suit """
     data = final_machine_learning()
     rank = process_plot_data(data)
     top_data = get_top_data(rank, data)

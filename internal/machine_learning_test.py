@@ -1,34 +1,24 @@
+from .utils import remove_col, x_y, ask_question
+from .split import get_train, get_dev, get_test
+
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.metrics import mean_squared_error
-from split import train, test
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-def ask_question(s):
-    return str(input(s)).upper()[0] == 'Y'
-
-
-def remove_id(dset):
-    return dset.loc[:, (dset.columns != 'id') & (dset.columns != 'fromUser.id')]
-
-
-def x_y(dset):
-    return dset.loc[:, dset.columns != 'readBy'], dset['readBy']
-
-
 def graph_analysis(train, dev):
-    train = remove_id(train)
-    dev = remove_id(dev)
+    train = remove_col(train, 'id')
+    dev = remove_col(dev, 'id')
     train_frac = dev.sample(frac=0.05)
     dev_frac = dev.sample(frac=0.05)
-    x_train, y_train = x_y(train_frac)
-    x_dev, y_dev = x_y(dev_frac)
+    x_train, y_train = x_y(train_frac, 'readBy', 'readBy')
+    x_dev, y_dev = x_y(dev_frac, 'readyBy', 'readBy')
 
     if ask_question('test max_depth? [Y or N]: '):
         plot_data_1 = []
@@ -465,13 +455,13 @@ def impurity_split(x_train, y_train, x_dev, y_dev, x_test, y_test):
 
 def isolated_test(train, dev, test):
     logger.info('focused test 4')
-    train = remove_id(train)
-    dev = remove_id(dev)
-    test = remove_id(test)
+    train = remove_col(train, id)
+    dev = remove_col(dev, id)
+    test = remove_col(test, id)
 
-    x_train, y_train = x_y(train)
-    x_dev, y_dev = x_y(dev)
-    x_test, y_test = x_y(test)
+    x_train, y_train = x_y(train, 'readBy')
+    x_dev, y_dev = x_y(dev, 'readBy')
+    x_test, y_test = x_y(test, 'readBy')
 
     depth(x_train, y_train, x_dev, y_dev, x_test, y_test)
     # leaf_nodes(x_train, y_train, x_dev, y_dev, x_test, y_test)
@@ -480,13 +470,13 @@ def isolated_test(train, dev, test):
 
 def focused_test(train, dev, test):
     logger.info('focused test 5')
-    train = remove_id(train)
-    dev = remove_id(dev)
-    test = remove_id(test)
+    train = remove_col(train, id)
+    dev = remove_col(dev, id)
+    test = remove_col(test, id)
 
-    x_train, y_train = x_y(train)
-    x_dev, y_dev = x_y(dev)
-    x_test, y_test = x_y(test)
+    x_train, y_train = x_y(train, 'readBy')
+    x_dev, y_dev = x_y(dev, 'readBy')
+    x_test, y_test = x_y(test, 'readBy')
 
     logger.info(
         'testing max_depth=6, max_leaf_nodes=31'
@@ -507,9 +497,9 @@ def focused_test(train, dev, test):
 
 
 def main():
-    graph_analysis(train(), dev())
-    # isolated_test(train(), dev(), test())
-    focused_test(train(), dev(), test())
+    graph_analysis(get_train(), get_dev())
+    # isolated_test(get_train(), get_dev(), get_test())
+    focused_test(get_train(), get_dev(), get_test())
 
 
 if __name__ == "__main__":

@@ -1,13 +1,15 @@
-from clean_data import clean_sentence
+from .clean_data import clean_sentence
+
 import pandas as pd
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 DATA_FILE = 'groupme/message.json'
 
 
 def main():
+    """ Prepares the groupme data """
     logger.info('loading in json')
     with open(DATA_FILE) as file:
         data = pd.read_json(file)[['user_id', 'name', 'text',
