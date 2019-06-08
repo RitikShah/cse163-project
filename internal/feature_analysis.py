@@ -9,7 +9,7 @@ import pandas as pd
 
 
 def final_machine_learning():
-    # making predictions for every messages in the testing data
+    """ making predictions for every messages in the testing data """
     if ask_question('use pickle? [Y or N]: '):
         data = pd.read_pickle('pickle/analysis.pkl')
     else:
@@ -35,6 +35,7 @@ def final_machine_learning():
 
 
 def process_plot_data(data):
+    """ Processes plot data """
     data['count'] = 1
     count = data.groupby('fromUser.id')['count'].sum()
     users = data.groupby('fromUser.id')['readBy_predict'].mean()
@@ -47,6 +48,7 @@ def process_plot_data(data):
 
 
 def get_top_data(active_rank, data):
+    """ Grabs the top 5 users """
     top_5_list = list(active_rank.loc[0:4, 'fromUser.id'])
     top_5_df = data[data['fromUser.id'].isin(top_5_list)].reset_index()
     top_5_df_mean = top_5_df
@@ -59,6 +61,7 @@ def get_top_data(active_rank, data):
 
 
 def get_bot_data(active_rank, data):
+    """ Grabs the bottom 5 users """
     bottom_5_list = list(active_rank.loc[len(active_rank) - 5:
                                          len(active_rank), 'fromUser.id'])
     bottom_5_df = data[data['fromUser.id'].isin(bottom_5_list)].reset_index()
@@ -72,6 +75,7 @@ def get_bot_data(active_rank, data):
 
 
 def plot_top_excalamation_count(data):
+    """ Plots various ratios about top and bottom users """
     plt.figure(1)
     sns.barplot(x='fromUser.id', y='exclamationCount', hue='readBy_predict',
                 data=data)
@@ -80,6 +84,7 @@ def plot_top_excalamation_count(data):
 
 
 def plot_bot_exclamation_count(data):
+    """ Plots various ratios about top and bottom users """
     plt.figure(2)
     sns.barplot(x='fromUser.id', y='exclamationCount', hue='readBy_predict',
                 data=data)
@@ -88,6 +93,7 @@ def plot_bot_exclamation_count(data):
 
 
 def plot_top_noun_ratio(data):
+    """ Plots various ratios about top and bottom users """
     plt.figure(3)
     sns.barplot(x='fromUser.id', y='nounRatio', hue='readBy_predict',
                 data=data)
@@ -96,6 +102,7 @@ def plot_top_noun_ratio(data):
 
 
 def plot_bot_noun_ratio(data):
+    """ Plots various ratios about top and bottom users """
     plt.figure(4)
     sns.barplot(x='fromUser.id', y='nounRatio', hue='readBy_predict',
                 data=data)
@@ -104,6 +111,7 @@ def plot_bot_noun_ratio(data):
 
 
 def plot_top_urls_count(data):
+    """ Plots various ratios about top and bottom users """
     plt.figure(5)
     sns.barplot(x='fromUser.id', y='urlsCount', hue='readBy_predict',
                 data=data)
@@ -112,6 +120,7 @@ def plot_top_urls_count(data):
 
 
 def plot_bot_urls_count(data):
+    """ Plots various ratios about top and bottom users """
     plt.figure(6)
     sns.barplot(x='fromUser.id', y='urlsCount', hue='readBy_predict',
                 data=data)
@@ -120,6 +129,7 @@ def plot_bot_urls_count(data):
 
 
 def main():
+    """ Runs entire plotting suit """
     data = final_machine_learning()
     rank = process_plot_data(data)
     top_data = get_top_data(rank, data)

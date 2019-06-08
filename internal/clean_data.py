@@ -19,11 +19,12 @@ COL_TYPES = {
 
 
 def clean_sentence(sentence):
+    """ Regex to remove junk from a sentence (used in sentiment analysis) """
     return re.sub(r'[^A-Za-z\s]+', '', sentence.lower())
 
 
 def clean(file, percent):
-    # drop empty text
+    """ Prepares data from read in csv file """
     logger.info('reading file into dataframe')
     if percent == 1.0:
         df = pd.read_csv(file, na_values=None, dtype=COL_TYPES,
@@ -43,6 +44,7 @@ def clean(file, percent):
 
 
 def main():
+    """ Runs functions to test clean_data and saves it in a pkl """
     data = clean(DATA_FILE)
     logger.info('pickling to cleaned.pkl')
     data.to_pickle('cleaned.pkl')

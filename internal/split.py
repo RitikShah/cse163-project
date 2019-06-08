@@ -15,21 +15,25 @@ TEST_PKL = 'pickles/test.pkl'
 
 
 def get_train():
+    """ unpickles training pkl and returns it """
     logger.info('unpickling train')
     return pd.read_pickle(TRAIN_PKL)
 
 
 def get_dev():
+    """ unpickles dev pkl and returns it """
     logger.info('unpickling dev')
     return pd.read_pickle(DEV_PKL)
 
 
 def get_test():
+    """ unpickles testing pkl and returns it """
     logger.info('unpickling test')
     return pd.read_pickle(TEST_PKL)
 
 
 def split(data):
+    """ Splits data into: train, dev, and test set as a 60:20:20 ratio """
     logger.info('splitting into train, dev, test sets')
     data = data.sample(frac=1.0).reset_index(drop=True)
     # data = data.loc[:, data.columns != 'wordCount']
@@ -45,6 +49,7 @@ def split(data):
 
 
 def main():
+    """ Calls split (when split run by itself) """
     split(unpickle(FEATURED_PKL))
 
 

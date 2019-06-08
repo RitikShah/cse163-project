@@ -17,7 +17,6 @@ import sys
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('main')
 
-
 DATA_FILE = 'data/freecodecamp_casual_chatroom.csv'
 
 # pickles
@@ -28,11 +27,8 @@ GROUPME_PKL = 'pickles/groupme.pkl'
 TO_PERCENT = {1: 1, 2: 0.1, 3: 0.01}
 
 
-def ask_question(s):
-    return str(input(s)).upper()[0] == 'Y'
-
-
 def get_input():
+    """ Grabs input as string and handles CTRL+C """
     try:
         inn = str(input(INTRO_INPUT))
     except KeyboardInterrupt:
@@ -42,11 +38,13 @@ def get_input():
 
 
 def goodbye():
+    """ Prints goodbye and quits"""
     print('\nGoodbye')
     sys.exit()
 
 
 def main():
+    """ Command line interface to work with entire program """
     print('\n')
     print(INTRO)
     action = get_input()

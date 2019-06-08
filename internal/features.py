@@ -35,7 +35,6 @@ def avg_word_length(df):
     return df['text'].str.replace(' ', '').str.len() / df['wordCount']
 
 
-# could use lambdas, but using internal functions bc readability
 def adj_ratio(df):
     return df['textblobs'].str.count(ADJS) / df['wordCount']
 
@@ -65,11 +64,13 @@ def questions(df):
 
 
 def fix_infs(df, col):
+    """ Fixes infinite values that could come from division by 0 """
     df[col] = df[col].replace([np.inf, -np.inf], np.nan)
     df[col] = df[col].fillna(value=0)
 
 
 def get_features(data):
+    """ Creates a set of features from a given text """
     logger.info('getting features from text and text_clean')
     features = data[['text', 'text_clean', 'mentions',
                      'urls', 'id', 'readBy', 'fromUser.id']]  # expand on

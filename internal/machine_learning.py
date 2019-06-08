@@ -23,7 +23,7 @@ LEAF_NODES = 31
 
 
 def plot_tree(model, X, y):
-    """ From Hunter's lectures """
+    """ Plots the model's tree in graphviz | from Hunter's lectures """
     dot_data = export_graphviz(model, out_file=None,
                                feature_names=X.columns,
                                class_names=y.unique(),
@@ -33,6 +33,7 @@ def plot_tree(model, X, y):
 
 
 def calc_close(num, a, b):
+    """ Calculates how close the predicts are to actual values in a range """
     close = 0
     for i in range(len(a)):
         if (a[i] >= (b[i] - 2)) & (a[i] <= (b[i] + 2)):
@@ -42,6 +43,7 @@ def calc_close(num, a, b):
 
 
 def ml(train, test, num):
+    """ Constructs a model with a given training and testing set """
     logger.info('removing id col')
     train = remove_col(train, 'id')
     train = remove_col(train, 'fromUser.id')

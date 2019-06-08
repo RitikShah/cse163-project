@@ -9,6 +9,7 @@ DATA_FILE = 'groupme/message.json'
 
 
 def main():
+    """ Prepares the groupme data """
     logger.info('loading in json')
     with open(DATA_FILE) as file:
         data = pd.read_json(file)[['user_id', 'name', 'text',
