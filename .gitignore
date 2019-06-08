@@ -9,3 +9,9 @@ Git tutorial.docx
 convert.py
 *.pkl
 groupme/
+graphs/
+*.pdf
+*.gv
+*.txt
+decision\ trees/
+.vscode/

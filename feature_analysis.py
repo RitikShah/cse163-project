@@ -44,7 +44,7 @@ def process_plot_data(data):
 
 
 def get_top_data(active_rank, data):
-    top_5_list = list(active_rank.loc[0:4, 'fromUser.id'])
+    top_5_list = list(active_rank.loc[0:9, 'fromUser.id'])
     top_5_df = data[data['fromUser.id'].isin(top_5_list)].reset_index()
     top_5_df_mean = top_5_df
     top_exclamation_mean = top_5_df.groupby('fromUser.id')['readBy_predict'] \
@@ -56,7 +56,7 @@ def get_top_data(active_rank, data):
 
 
 def get_bot_data(active_rank, data):
-    bottom_5_list = list(active_rank.loc[len(active_rank) - 5:
+    bottom_5_list = list(active_rank.loc[len(active_rank) - 10:
                                          len(active_rank), 'fromUser.id'])
     bottom_5_df = data[data['fromUser.id'].isin(bottom_5_list)].reset_index()
     bot_exclamation_mean = bottom_5_df \
