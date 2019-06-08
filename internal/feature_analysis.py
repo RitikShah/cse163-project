@@ -1,6 +1,6 @@
 from .utils import remove_col, x_y, ask_question, unpickle
 from .machine_learning import DEPTH, LEAF_NODES
-from .split import get_train, get_test, split
+from .split import split
 
 from sklearn.tree import DecisionTreeRegressor
 import matplotlib.pyplot as plt
@@ -77,21 +77,23 @@ def get_bot_data(active_rank, data):
 
 def plot_top_excalamation_count(data):
     """ Plots various ratios about top and bottom users """
-    plt.figure(1)
+    plt.figure(1, figsize=(20, 20))
     sns.catplot(x='fromUser.id', y='exclamationCount', hue='readBy_predict',
                 data=data, kind="bar", legend_out=True)
-    plt.ylim(0, 5.0)
+    plt.ylim(0, 2.0)
     plt.xticks(rotation=-15)
+    plt.title("top user's excalamation count graph")
     plt.savefig('graphs/top_5_excalamation_count.png')
 
 
 def plot_bot_exclamation_count(data):
     """ Plots various ratios about top and bottom users """
-    plt.figure(2)
+    plt.figure(2, figsize=(20, 20))
     sns.catplot(x='fromUser.id', y='exclamationCount', hue='readBy_predict',
                 data=data, kind="bar", legend_out=True)
-    plt.ylim(0, 5.0)
+    plt.ylim(0, 2.5)
     plt.xticks(rotation=-15)
+    plt.title("bottom user's excalamation count graph")
     plt.savefig('graphs/bottom_5_excalamation_count.png')
 
 
@@ -100,8 +102,9 @@ def plot_top_noun_ratio(data):
     plt.figure(3)
     sns.catplot(x='fromUser.id', y='nounRatio', hue='readBy_predict',
                 data=data, kind="bar", legend_out=True)
-    plt.ylim(0, 1.6)
+    plt.ylim(0, 2.5)
     plt.xticks(rotation=-15)
+    plt.title("top user's noun ratio graph")
     plt.savefig('graphs/top_5_noun_ratio.png')
 
 
@@ -110,8 +113,9 @@ def plot_bot_noun_ratio(data):
     plt.figure(4)
     sns.catplot(x='fromUser.id', y='nounRatio', hue='readBy_predict',
                 data=data, kind="bar", legend_out=True)
-    plt.ylim(0, 1.6)
+    plt.ylim(0, 2.0)
     plt.xticks(rotation=-15)
+    plt.title("bottom user's noun ratio graph")
     plt.savefig('graphs/bottom_5_noun_ratio.png')
 
 
@@ -121,7 +125,8 @@ def plot_top_urls_count(data):
     sns.catplot(x='fromUser.id', y='urlsCount', hue='readBy_predict',
                 data=data, kind="bar", legend_out=True)
     plt.xticks(rotation=-15)
-    plt.ylim(0, 1.0)
+    plt.ylim(0, 1.5)
+    plt.title("top user's urls count graph")
     plt.savefig('graphs/top_5_urls_count.png')
 
 
@@ -131,7 +136,8 @@ def plot_bot_urls_count(data):
     sns.catplot(x='fromUser.id', y='urlsCount', hue='readBy_predict',
                 data=data, kind="bar", legend_out=True)
     plt.xticks(rotation=-15)
-    plt.ylim(0, 1.0)
+    plt.ylim(0, 1.5)
+    plt.title("bottom user's urls count graph")
     plt.savefig('graphs/bottom_5_urls_count.png')
 
 
@@ -141,6 +147,7 @@ def main():
     rank = process_plot_data(data)
     top_data = get_top_data(rank, data)
     bot_data = get_bot_data(rank, data)
+    sns.set(rc={'figure.figsize': (12, 12)})
     # breakpoint()
     if ask_question('plot excalmation count? [Y or N]: '):
         plot_top_excalamation_count(top_data)
