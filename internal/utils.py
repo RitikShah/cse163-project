@@ -28,7 +28,11 @@ def goodbye():
 
 def ask_question(s):
     """ Simple method that handles input from question asking via input """
-    return str(input(s)).upper()[0] == 'Y'
+    try:
+        ans = str(input(s))
+    except KeyboardInterrupt:
+        goodbye()
+    return ans.upper()[0] == 'Y'
 
 
 def remove_col(dset, col):
