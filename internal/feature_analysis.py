@@ -1,36 +1,37 @@
-from .utils import remove_col, x_y, ask_question
+from .utils import remove_col, x_y, ask_question, unpickle
 from .machine_learning import DEPTH, LEAF_NODES
-from .split import get_train, get_test
+from .split import get_train, get_test, split
 
 from sklearn.tree import DecisionTreeRegressor
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 
+FEATURED_PKL = 'pickles/featured.pkl'
+
 
 def final_machine_learning():
     """ making predictions for every messages in the testing data """
-    if ask_question('use pickle? [Y or N]: '):
-        data = pd.read_pickle('pickle/analysis.pkl')
+    if ask_question('Use pickle? [Y or N]: '):
+        data = pd.read_pickle('pickles/analysis.pkl')
     else:
+        train, _, test = split(unpickle(FEATURED_PKL))
         DEPTH_value = DEPTH
         LEAF_NODES_value = LEAF_NODES
-        test_set = remove_col(get_test(), 'id')
-        test_set = remove_col(get_test(), 'fromUser.id')
-        train_set = remove_col(get_train(), 'id')
-        train_set = remove_col(get_train(), 'fromUser.id')
-        x_train, y_train = x_y(train_set)
-        x_test, y_test = x_y(test_set)
+        test_set = remove_col(remove_col(test, 'id'), 'fromUser.id')
+        train_set = remove_col(remove_col(train, 'id'), 'fromUser.id')
+        x_train, y_train = x_y(train_set, 'readBy')
+        x_test, y_test = x_y(test_set, 'readBy')
         model = DecisionTreeRegressor(
                 max_depth=DEPTH_value,
                 max_leaf_nodes=LEAF_NODES_value,
                 )
         model.fit(x_train, y_train)
         readBy_predict = model.predict(x_test)
-        data = get_test()
+        data = test
         # breakpoint()
         data['readBy_predict'] = readBy_predict
-        data.to_pickle('pickle/analysis.pkl')
+        data.to_pickle('pickles/analysis.pkl')
     return data
 
 

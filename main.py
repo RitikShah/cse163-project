@@ -99,7 +99,7 @@ ACTIONS = {
     3: percent1,
     4: from_pickle,
     5: mlt.main,
-    6: fa
+    6: fa.main
 }
 
 

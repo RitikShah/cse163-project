@@ -28,16 +28,14 @@ def clean(file, percent):
     logger.info('reading file into dataframe')
     if percent == 1.0:
         df = pd.read_csv(file, na_values=None, dtype=COL_TYPES,
-                         low_memory=False)
+                         low_memory=False, usecols=COL_TYPES.keys())
     else:
         # this randomly grabs a percentage of the data
         df = pd.read_csv(file, na_values=None, low_memory=False,
-                         dtype=COL_TYPES,
+                         dtype=COL_TYPES, usecols=COL_TYPES.keys(),
                          skiprows=lambda i: i > 0 and random() > percent)
     df = df.dropna(subset=['text'])
 
-    # select certain columns
-    df = df[list(COL_TYPES.keys())]
     logger.info('cleaning text into text_clean')
     df['text_clean'] = df['text'].apply(clean_sentence)
     return df
