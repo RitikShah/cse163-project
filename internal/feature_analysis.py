@@ -91,7 +91,7 @@ def plot_bot_exclamation_count(data):
     plt.figure(2, figsize=(20, 20))
     sns.catplot(x='fromUser.id', y='exclamationCount', hue='readBy_predict',
                 data=data, kind="bar", legend_out=True)
-    plt.ylim(0, 2.5)
+    plt.ylim(0, 2.0)
     plt.xticks(rotation=-15)
     plt.title("bottom user's excalamation count graph")
     plt.savefig('graphs/bottom_5_excalamation_count.png')
