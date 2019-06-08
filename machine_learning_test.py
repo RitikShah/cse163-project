@@ -1,6 +1,6 @@
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.metrics import mean_squared_error
-from split import train, dev, test
+from split import train, test
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
@@ -15,7 +15,7 @@ def ask_question(s):
 
 
 def remove_id(dset):
-    return dset.loc[:, dset.columns != 'id']
+    return dset.loc[:, (dset.columns != 'id') & (dset.columns != 'fromUser.id')]
 
 
 def x_y(dset):

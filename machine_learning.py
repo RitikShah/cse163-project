@@ -1,5 +1,5 @@
-from sklearn.tree import DecisionTreeRegressor
 from machine_learning_test import remove_id, x_y
+from sklearn.tree import DecisionTreeRegressor
 from sklearn.metrics import mean_squared_error
 from sklearn.tree import export_graphviz
 from split import train, test

@@ -14,7 +14,7 @@ def clean(file):
         return re.sub(r'[^A-Za-z\s]+', '', sentence.lower())
 
 
-def clean(file):
+def clean_sentence(file):
     # drop empty text
     logger.info('reading file into dataframe')
     if not DEBUG:
@@ -26,7 +26,6 @@ def clean(file):
 
     # select certain columns
     df = df[[
-                'sent',
                 'fromUser.displayName',
                 'fromUser.username',
                 'fromUser.id',

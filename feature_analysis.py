@@ -70,50 +70,56 @@ def get_bot_data(active_rank, data):
 
 def plot_top_excalamation_count(data):
     plt.figure(1)
-    sns.barplot(x='fromUser.id', y='exclamationCount', hue='readBy_predict',
-                data=data)
+    sns.catplot(x='fromUser.id', y='exclamationCount', hue='readBy_predict',
+                data=data, kind="bar", legend_out=True)
+    plt.ylim(0, 5.0)
     plt.xticks(rotation=-15)
     plt.savefig('graphs/top_5_excalamation_count.png')
 
 
 def plot_bot_exclamation_count(data):
     plt.figure(2)
-    sns.barplot(x='fromUser.id', y='exclamationCount', hue='readBy_predict',
-                data=data)
+    sns.catplot(x='fromUser.id', y='exclamationCount', hue='readBy_predict',
+                data=data, kind="bar", legend_out=True)
+    plt.ylim(0, 5.0)
     plt.xticks(rotation=-15)
     plt.savefig('graphs/bottom_5_excalamation_count.png')
 
 
 def plot_top_noun_ratio(data):
     plt.figure(3)
-    sns.barplot(x='fromUser.id', y='nounRatio', hue='readBy_predict',
-                data=data)
+    sns.catplot(x='fromUser.id', y='nounRatio', hue='readBy_predict',
+                data=data, kind="bar", legend_out=True)
+    plt.ylim(0, 1.6)
     plt.xticks(rotation=-15)
     plt.savefig('graphs/top_5_noun_ratio.png')
 
 
 def plot_bot_noun_ratio(data):
     plt.figure(4)
-    sns.barplot(x='fromUser.id', y='nounRatio', hue='readBy_predict',
-                data=data)
+    sns.catplot(x='fromUser.id', y='nounRatio', hue='readBy_predict',
+                data=data, kind="bar", legend_out=True)
+    plt.ylim(0, 1.6)
     plt.xticks(rotation=-15)
     plt.savefig('graphs/bottom_5_noun_ratio.png')
 
 
 def plot_top_urls_count(data):
     plt.figure(5)
-    sns.barplot(x='fromUser.id', y='urlsCount', hue='readBy_predict',
-                data=data)
+    sns.catplot(x='fromUser.id', y='urlsCount', hue='readBy_predict',
+                data=data, kind="bar", legend_out=True)
     plt.xticks(rotation=-15)
+    plt.ylim(0, 1.0)
     plt.savefig('graphs/top_5_urls_count.png')
 
 
 def plot_bot_urls_count(data):
     plt.figure(6)
-    sns.barplot(x='fromUser.id', y='urlsCount', hue='readBy_predict',
-                data=data)
+    sns.catplot(x='fromUser.id', y='urlsCount', hue='readBy_predict',
+                data=data, kind="bar", legend_out=True)
     plt.xticks(rotation=-15)
-    plt.savefig('graphs/bottom_5_urls_countssw.png')
+    plt.ylim(0, 1.0)
+    plt.savefig('graphs/bottom_5_urls_count.png')
 
 
 def main():
@@ -121,12 +127,15 @@ def main():
     rank = process_plot_data(data)
     top_data = get_top_data(rank, data)
     bot_data = get_bot_data(rank, data)
-    plot_top_excalamation_count(top_data)
-    plot_bot_exclamation_count(bot_data)
-    plot_top_noun_ratio(top_data)
-    plot_bot_noun_ratio(bot_data)
-    plot_top_urls_count(top_data)
-    plot_bot_urls_count(bot_data)
+    if ask_question('plot excalmation count? [Y or N]: '):
+        plot_top_excalamation_count(top_data)
+        plot_bot_exclamation_count(bot_data)
+    if ask_question('plot noun ratio? [Y or N]: '):
+        plot_top_noun_ratio(top_data)
+        plot_bot_noun_ratio(bot_data)
+    if ask_question('plot urls count? [Y or N]: '):
+        plot_top_urls_count(top_data)
+        plot_bot_urls_count(bot_data)
 
 
 if __name__ == '__main__':
