@@ -3,14 +3,18 @@ import pandas as pd
 import logging
 import re
 
-DATA_FILE = 'data/freecodecamp_casual_chatroom.csv'
+DATA_FILE = 'data/freecodecamp_casual_chatroom_anon.csv'
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# This optimizes the data frames as it puts in specific types for each of the
+#  column. The dataframe automatically assumes that everything is an object.
+# This also used to only read in certain columns which I believe improves the
+#  it takes to read in the table.
 COL_TYPES = {
     'fromUser.id': str,
-    'mentions': object,
+    'mentions.userIds': object,
     'urls': object,
     'readBy': int,
     'id': str,
@@ -37,6 +41,7 @@ def clean(file, percent):
     df = df.dropna(subset=['text'])
 
     logger.info('cleaning text into text_clean')
+    df['mentions'] = df['mentions.userIds']  # hotfix for using anon csv
     df['text_clean'] = df['text'].apply(clean_sentence)
     return df
 

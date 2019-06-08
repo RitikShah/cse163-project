@@ -15,11 +15,11 @@ import internal.feature_analysis as fa
 from time import time
 import logging
 
-# logging is used through out to help provide imput
+# logging is used throughout to help provide imput
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('main')
 
-DATA_FILE = 'data/freecodecamp_casual_chatroom.csv'
+DATA_FILE = 'data/freecodecamp_casual_chatroom_anon.csv'
 
 # pickles
 CLEANED_PKL = 'pickles/cleaned.pkl'
@@ -34,8 +34,10 @@ def groupme():
     if action != '':
         goodbye()
 
+    start = time()
     train, _, test = split(unpickle(GROUPME_PKL))
     ml(train, test, 1)
+    print(f'Time Elapsed: {round(time() - start, 3)}s')
     goodbye()
 
 

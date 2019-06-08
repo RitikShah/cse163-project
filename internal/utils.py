@@ -2,7 +2,6 @@ from pathlib import Path
 import pandas as pd
 import logging
 import sys
-import os
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
