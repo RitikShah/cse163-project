@@ -15,7 +15,6 @@ graphs/
 *.txt
 decision\ trees/
 .vscode/
-data/
 log.txt
 models/
 *.png
