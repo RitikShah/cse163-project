@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 import logging
 
+# regex to find those specific tags. used in the ration methods
 ADJS = r'(JJR)|(JJS)|(JJ)'
 VERBS = r'(VBD)|(VBG)|(VBN)|(VBP)|(VBZ)|(VB)'
 NOUNS = r'(NNPS)|(NNP)|(NNS)|(NN)'
@@ -12,7 +13,7 @@ NOUNS = r'(NNPS)|(NNP)|(NNS)|(NN)'
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-pd.options.mode.chained_assignment = None  # default='warn' annoying :/
+pd.options.mode.chained_assignment = None  # this turns off some warnings
 
 
 def transform(df, col):
@@ -28,7 +29,7 @@ def subjectivity(df):
 
 
 def word_count(df):
-    return df['text'].str.count(r'\s')
+    return df['text'].str.count(r'\s')  # counting spaces -> words
 
 
 def avg_word_length(df):
@@ -48,7 +49,7 @@ def noun_ratio(df):
 
 
 def mentions(df):
-    return df['mentions'].apply(eval).apply(len)
+    return df['mentions'].apply(eval).apply(len)  # this is dirty but it works
 
 
 def urls(df):
@@ -84,6 +85,9 @@ def get_features(data):
     # making textblobs
     logger.info('preprocessing textblobs')
     logger.info('  textblobs for normal text')
+    # working with strings instead of objects is much faster for pandas
+    # Here, i make a string with tags seperated with spaces
+    # This allows me to use regex counting methods which are vectorized (spd!)
     features['textblobs'] = transform(features, 'text').apply(
         lambda blob: ' '.join([x[1] for x in blob.tags])  # getting only tags
     )
@@ -92,25 +96,22 @@ def get_features(data):
 
     logger.info('calculating polarity and subjectivity')
     # sentiment features
-    logger.info('  pol')
+    logger.info('  polarity')
     features['polarity'] = polarity(features)
-    logger.info('  sub')
+    logger.info('  subjectivity')
     features['subjectivity'] = subjectivity(features)
 
-    features = remove_col(features, 'text_clean')
+    features = remove_col(features, 'text_clean')  # trying to reduce memory
 
     logger.info('calculating word count')
-    # word count
     features['wordCount'] = word_count(features)
 
-    # average word length
     logger.info('calculating avg word length')
     features['avgWordLength'] = avg_word_length(features)
     fix_infs(features, 'avgWordLength')
 
     logger.info('calculating ratios')
-    # ratios
-    logger.info('  adj')
+    logger.info('  adjective')
     features['adjRatio'] = adj_ratio(features)
     fix_infs(features, 'adjRatio')
 
@@ -131,6 +132,7 @@ def get_features(data):
     features['questionCount'] = questions(features)
 
     logger.info('done!')
+    # only return the columns that we need for sure.
     return features.loc[:, feature_columns + ['id', 'readBy', 'fromUser.id']]
 
 
@@ -138,6 +140,3 @@ if __name__ == '__main__':
     ''' testing the code '''
     data = unpickle('pickles/cleaned.pkl')
     out = get_features(data)
-    logger.info('  done!')
-    # data.to_pickle('pickles/bleh.pkl')
-    # print(out)

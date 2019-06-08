@@ -2,7 +2,6 @@ from pathlib import Path
 import pandas as pd
 import logging
 import sys
-import os
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -28,7 +27,11 @@ def goodbye():
 
 def ask_question(s):
     """ Simple method that handles input from question asking via input """
-    return str(input(s)).upper()[0] == 'Y'
+    try:
+        ans = str(input(s))
+    except KeyboardInterrupt:
+        goodbye()
+    return ans.upper()[0] == 'Y'
 
 
 def remove_col(dset, col):

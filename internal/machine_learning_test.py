@@ -13,6 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 def graph_analysis(train, dev):
+    """ This tests 8 parameters and graphs over accuracy """
     train = remove_col(train, 'id')
     dev = remove_col(dev, 'id')
     train_frac = dev.sample(frac=0.05)
@@ -98,9 +99,9 @@ def graph_analysis(train, dev):
             train_score = mean_squared_error(y_train, model.predict(x_train))
             test_score = mean_squared_error(y_dev, model.predict(x_dev))
 
-            plot_data_4.append({'min weight fraction leaf': i, 'mean square error':
+            plot_data_4.append({'min weight fraction leaf': i, 'mean square error':  # noqa
                                 train_score, 'predict type': 'trainning'})
-            plot_data_4.append({'min weight fraction leaf': i, 'mean square error':
+            plot_data_4.append({'min weight fraction leaf': i, 'mean square error':  # noqa
                                 test_score, 'predict type': 'testing'})
 
         plot_data_4 = pd.DataFrame(plot_data_4)
@@ -108,7 +109,7 @@ def graph_analysis(train, dev):
         print(plot_data_4.loc[test_data['mean square error'].idxmin()])
 
         sns.relplot(kind='line', x='min weight fraction leaf',
-                    y='mean square error', hue='predict type', data=plot_data_4)
+                    y='mean square error', hue='predict type', data=plot_data_4)  # noqa
         plt.savefig('graphs/min_weight_fraction_leaf.png')
 
     if ask_question('test max_features? [Y or N]: '):
@@ -123,7 +124,7 @@ def graph_analysis(train, dev):
 
             plot_data_5.append({'max features': i, 'mean square error':
                                 train_score, 'predict type': 'trainning'})
-            plot_data_5.append({'max features': i, 'mean square error': test_score,
+            plot_data_5.append({'max features': i, 'mean square error': test_score,  # noqa
                                 'predict type': 'testing'})
 
         plot_data_5 = pd.DataFrame(plot_data_5)
@@ -166,16 +167,16 @@ def graph_analysis(train, dev):
             train_score = mean_squared_error(y_train, model.predict(x_train))
             test_score = mean_squared_error(y_dev, model.predict(x_dev))
 
-            plot_data_7.append({'min impurity decrease': i, 'mean square error':
+            plot_data_7.append({'min impurity decrease': i, 'mean square error':  # noqa
                                 train_score, 'predict type': 'trainning'})
-            plot_data_7.append({'min impurity decrease': i, 'mean square error':
+            plot_data_7.append({'min impurity decrease': i, 'mean square error':  # noqa
                                 test_score, 'predict type': 'testing'})
 
         plot_data_7 = pd.DataFrame(plot_data_7)
         test_data = plot_data_7[plot_data_7['predict type'] == 'testing']
         print(plot_data_7.loc[test_data['mean square error'].idxmin()])
 
-        sns.relplot(kind='line', x='min impurity decrease', y='mean square error',
+        sns.relplot(kind='line', x='min impurity decrease', y='mean square error',  # noqa
                     hue='predict type', data=plot_data_7)
         plt.savefig('graphs/min_inpurity_decrease.png')
 
@@ -204,6 +205,7 @@ def graph_analysis(train, dev):
 
 
 def depth(x_train, y_train, x_dev, y_dev, x_test, y_test):
+    """ isolated depth tests """
     min_mse = None
     min_model = None
     min_depth = 0
@@ -235,6 +237,7 @@ def depth(x_train, y_train, x_dev, y_dev, x_test, y_test):
 
 
 def samples_split(x_train, y_train, x_dev, y_dev, x_test, y_test):
+    """ isolated samples split tests """
     min_mse = None
     min_model = None
     min_depth = 0
@@ -266,6 +269,7 @@ def samples_split(x_train, y_train, x_dev, y_dev, x_test, y_test):
 
 
 def samples_leaf(x_train, y_train, x_dev, y_dev, x_test, y_test):
+    """ isolated samples leaf tests """
     min_mse = None
     min_model = None
     min_depth = 0
@@ -298,6 +302,7 @@ def samples_leaf(x_train, y_train, x_dev, y_dev, x_test, y_test):
 
 
 def fraction_leaf(x_train, y_train, x_dev, y_dev, x_test, y_test):
+    """ isolated fraction leafs tests """
     min_mse = None
     min_model = None
     min_depth = 0
@@ -330,6 +335,7 @@ def fraction_leaf(x_train, y_train, x_dev, y_dev, x_test, y_test):
 
 
 def features(x_train, y_train, x_dev, y_dev, x_test, y_test):
+    """ isolated features tests """
     min_mse = None
     min_model = None
     min_depth = 0
@@ -362,6 +368,7 @@ def features(x_train, y_train, x_dev, y_dev, x_test, y_test):
 
 
 def leaf_nodes(x_train, y_train, x_dev, y_dev, x_test, y_test):
+    """ isolated lead nodes """
     min_mse = None
     min_model = None
     min_depth = 0
@@ -393,6 +400,7 @@ def leaf_nodes(x_train, y_train, x_dev, y_dev, x_test, y_test):
 
 
 def impurity_decrease(x_train, y_train, x_dev, y_dev, x_test, y_test):
+    """ isolated impurity decerease tests """
     min_mse = None
     min_model = None
     min_depth = 0
@@ -424,6 +432,7 @@ def impurity_decrease(x_train, y_train, x_dev, y_dev, x_test, y_test):
 
 
 def impurity_split(x_train, y_train, x_dev, y_dev, x_test, y_test):
+    """ isolated impurity split tests """
     min_mse = None
     min_model = None
     min_depth = 0
@@ -454,6 +463,7 @@ def impurity_split(x_train, y_train, x_dev, y_dev, x_test, y_test):
 
 
 def isolated_test(train, dev, test):
+    """ isolated tests """
     logger.info('focused test 4')
     train = remove_col(train, id)
     dev = remove_col(dev, id)
@@ -469,6 +479,7 @@ def isolated_test(train, dev, test):
 
 
 def focused_test(train, dev, test):
+    """ focused tests """
     logger.info('focused test 5')
     train = remove_col(train, id)
     dev = remove_col(dev, id)
@@ -497,6 +508,7 @@ def focused_test(train, dev, test):
 
 
 def main():
+    """ runs suite. these methods were ran then tweaked and ran again """
     graph_analysis(get_train(), get_dev())
     # isolated_test(get_train(), get_dev(), get_test())
     focused_test(get_train(), get_dev(), get_test())
