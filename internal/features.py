@@ -1,4 +1,4 @@
-from .utils import unpickle
+from .utils import unpickle, remove_col
 
 from textblob import TextBlob
 import pandas as pd
@@ -96,6 +96,8 @@ def get_features(data):
     features['polarity'] = polarity(features)
     logger.info('  sub')
     features['subjectivity'] = subjectivity(features)
+
+    features = remove_col(features, 'text_clean')
 
     logger.info('calculating word count')
     # word count
