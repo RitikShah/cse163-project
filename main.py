@@ -15,6 +15,7 @@ import internal.feature_analysis as fa
 from time import time
 import logging
 
+# logging is used through out to help provide imput
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('main')
 
@@ -74,24 +75,28 @@ def scratch(percent):
 
 
 def percent100():
-    """ """
+    """ Runs scratch at 100% of database """
     scratch(1.00)
 
 
 def percent10():
+    """ Runs scratch at 10% of database """
     scratch(0.10)
 
 
 def percent1():
+    """ Runs scratch at 1% of database """
     scratch(0.01)
 
 
 def from_pickle():
+    """ Runs the machine learning model with the featured.pkl """
     data = unpickle(FEATURED_PKL)
     train, _, test = split(data)
     ml(train, test, 10)
 
 
+# Dictionaries provide easy key -> function sequence
 DATASETS = {
     'freecodecamp': freecodecamp,
     'groupme': groupme
