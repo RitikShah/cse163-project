@@ -1,8 +1,8 @@
 from .utils import remove_col, x_y, ask_question
+from .machine_learning import DEPTH, LEAF_NODES
+from .split import train, test
 
 from sklearn.tree import DecisionTreeRegressor
-from machine_learning import DEPTH, LEAF_NODES
-from split import train, test
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
