@@ -1,6 +1,7 @@
 from random import random
 import pandas as pd
 import logging
+import json
 import re
 
 DATA_FILE = 'data/freecodecamp_casual_chatroom_anon.csv'
@@ -38,10 +39,17 @@ def clean(file, percent):
         df = pd.read_csv(file, na_values=None, low_memory=False,
                          dtype=COL_TYPES, usecols=COL_TYPES.keys(),
                          skiprows=lambda i: i > 0 and random() > percent)
-    df = df.dropna(subset=['text'])
+    df['text'] = df['text'].fillna(value='')
 
     logger.info('cleaning text into text_clean')
-    df['mentions'] = df['mentions.userIds']  # hotfix for using anon csv
+    df['mentions'] = df['mentions.userIds'].apply(
+        lambda x: len(eval(x))
+    )
+
+    df['urls'] = df['urls'].apply(
+        lambda x: len(eval(x))
+    )
+
     df['text_clean'] = df['text'].apply(clean_sentence)
     return df
 

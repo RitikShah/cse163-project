@@ -6,9 +6,9 @@ import numpy as np
 import logging
 
 # regex to find those specific tags. used in the ration methods
-ADJS = r'(JJR)|(JJS)|(JJ)'
-VERBS = r'(VBD)|(VBG)|(VBN)|(VBP)|(VBZ)|(VB)'
-NOUNS = r'(NNPS)|(NNP)|(NNS)|(NN)'
+ADJS = r'JJ'
+VERBS = r'VB'
+NOUNS = r'NN'
 
 
 logging.basicConfig(level=logging.INFO)
@@ -29,7 +29,7 @@ def subjectivity(df):
 
 
 def word_count(df):
-    return df['text'].str.count(r'\s')  # counting spaces -> words
+    return df['text'].str.count(r'\w')  # counting words
 
 
 def avg_word_length(df):
@@ -76,11 +76,6 @@ def get_features(data):
     features = data[['text', 'text_clean', 'mentions',
                      'urls', 'id', 'readBy', 'fromUser.id']]  # expand on
     del data
-    feature_columns = ['polarity', 'subjectivity',
-                       'wordCount', 'avgWordLength',
-                       'adjRatio', 'verbRatio', 'nounRatio',
-                       'mentionsCount', 'urlsCount',
-                       'exclamationCount', 'questionCount']
 
     # making textblobs
     logger.info('preprocessing textblobs')
@@ -124,16 +119,21 @@ def get_features(data):
     fix_infs(features, 'nounRatio')
 
     logger.info('mentions and url count')
-    features['mentionsCount'] = mentions(features)
-    features['urlsCount'] = urls(features)
+    features['mentionsCount'] = features['mentions']
+    features['urlsCount'] = features['urls']
 
     logger.info('exclamation and question counts')
     features['exclamationCount'] = exclamations(features)
     features['questionCount'] = questions(features)
 
     logger.info('done!')
-    # only return the columns that we need for sure.
-    return features.loc[:, feature_columns + ['id', 'readBy', 'fromUser.id']]
+
+    features = remove_col(features, 'text')
+    features = remove_col(features, 'text_clean')
+    features = remove_col(features, 'textblobs')
+    features = remove_col(features, 'textblobs_clean')
+
+    return features
 
 
 if __name__ == '__main__':

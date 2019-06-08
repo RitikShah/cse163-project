@@ -9,6 +9,7 @@ from internal.features import get_features
 from internal.machine_learning import ml
 from internal.clean_data import clean
 from internal.split import split
+import internal.groupme
 import internal.machine_learning_test as mlt
 import internal.feature_analysis as fa
 
@@ -101,7 +102,8 @@ def from_pickle():
 # Dictionaries provide easy key -> function sequence
 DATASETS = {
     'freecodecamp': freecodecamp,
-    'groupme': groupme
+    'groupme': groupme,
+    'groupme_dev': internal.groupme.main  # hidden option used on groupme data
 }
 
 ACTIONS = {
