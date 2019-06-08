@@ -10,7 +10,6 @@ import pickle
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-# TODO: throw this in a function pls
 
 # hyper parameters constants
 DEPTH = 6
