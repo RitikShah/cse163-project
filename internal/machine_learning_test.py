@@ -410,47 +410,49 @@ def impurity_decrease(x_train, y_train, x_dev, y_dev, x_test, y_test):
 
 def isolated_test(train, dev, test):
     """ isolated tests """
-    logger.info('focused test 4')
-    train = remove_col(remove_col(train, 'fromUser.id'), 'id')
-    dev = remove_col(remove_col(dev, 'fromUser.id'), 'id')
-    test = remove_col(remove_col(test, 'fromUser.id'), 'id')
+    if ask_question('do isolated test? [Y or N]: '):
+        logger.info('focused test 4')
+        train = remove_col(remove_col(train, 'fromUser.id'), 'id')
+        dev = remove_col(remove_col(dev, 'fromUser.id'), 'id')
+        test = remove_col(remove_col(test, 'fromUser.id'), 'id')
 
-    x_train, y_train = x_y(train, 'readBy')
-    x_dev, y_dev = x_y(dev, 'readBy')
-    x_test, y_test = x_y(test, 'readBy')
+        x_train, y_train = x_y(train, 'readBy')
+        x_dev, y_dev = x_y(dev, 'readBy')
+        x_test, y_test = x_y(test, 'readBy')
 
-    depth(x_train, y_train, x_dev, y_dev, x_test, y_test)
-    leaf_nodes(x_train, y_train, x_dev, y_dev, x_test, y_test)
-    impurity_decrease(x_train, y_train, x_dev, y_dev, x_test, y_test)
+        depth(x_train, y_train, x_dev, y_dev, x_test, y_test)
+        leaf_nodes(x_train, y_train, x_dev, y_dev, x_test, y_test)
+        impurity_decrease(x_train, y_train, x_dev, y_dev, x_test, y_test)
 
 
 def focused_test(train, dev, test):
     """ focused tests """
-    logger.info('focused test 5')
-    train = remove_col(remove_col(train, 'fromUser.id'), 'id')
-    dev = remove_col(remove_col(dev, 'fromUser.id'), 'id')
-    test = remove_col(remove_col(test, 'fromUser.id'), 'id')
+    if ask_question('do focused test? [Y or N]: '):
+        logger.info('focused test 5')
+        train = remove_col(remove_col(train, 'fromUser.id'), 'id')
+        dev = remove_col(remove_col(dev, 'fromUser.id'), 'id')
+        test = remove_col(remove_col(test, 'fromUser.id'), 'id')
 
-    x_train, y_train = x_y(train, 'readBy')
-    x_dev, y_dev = x_y(dev, 'readBy')
-    x_test, y_test = x_y(test, 'readBy')
+        x_train, y_train = x_y(train, 'readBy')
+        x_dev, y_dev = x_y(dev, 'readBy')
+        x_test, y_test = x_y(test, 'readBy')
 
-    logger.info(
-        'testing max_depth=6, max_leaf_nodes=31'
-    )
-    model = DecisionTreeRegressor(max_depth=6,
-                                  max_leaf_nodes=31)
-    model.fit(x_train, y_train)
+        logger.info(
+            'testing max_depth=6, max_leaf_nodes=31'
+        )
+        model = DecisionTreeRegressor(max_depth=6,
+                                      max_leaf_nodes=31)
+        model.fit(x_train, y_train)
 
-    train_predict = model.predict(x_train)
-    dev_predict = model.predict(x_dev)
-    train_score = mean_squared_error(y_train, train_predict)
-    dev_score = mean_squared_error(y_dev, dev_predict)
+        train_predict = model.predict(x_train)
+        dev_predict = model.predict(x_dev)
+        train_score = mean_squared_error(y_train, train_predict)
+        dev_score = mean_squared_error(y_dev, dev_predict)
 
-    print({'mse train': train_score, 'mse test': dev_score})
+        print({'mse train': train_score, 'mse test': dev_score})
 
-    test_score = mean_squared_error(y_test, model.predict(x_test))
-    print(f'test mse: {test_score}')
+        test_score = mean_squared_error(y_test, model.predict(x_test))
+        print(f'test mse: {test_score}')
 
 
 def main():
