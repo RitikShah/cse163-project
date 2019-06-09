@@ -9,9 +9,10 @@ from internal.features import get_features
 from internal.machine_learning import ml
 from internal.clean_data import clean
 from internal.split import split
-import internal.groupme
 import internal.machine_learning_test as mlt
 import internal.feature_analysis as fa
+import internal.groupme
+import internal.tests
 
 from time import time
 import logging
@@ -112,7 +113,9 @@ ACTIONS = {
     3: percent1,
     4: from_pickle,
     5: mlt.main,
-    6: fa.main
+    6: fa.main,
+    7: internal.tests.main,
+    8: internal.tests.playground
 }
 
 

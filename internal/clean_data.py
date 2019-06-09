@@ -1,7 +1,8 @@
+from .utils import remove_col
+
 from random import random
 import pandas as pd
 import logging
-import json
 import re
 
 DATA_FILE = 'data/freecodecamp_casual_chatroom_anon.csv'
@@ -46,6 +47,7 @@ def clean(file, percent):
         lambda x: len(eval(x))
     )
 
+    df = remove_col(df, 'mentions.userIds')
     df['urls'] = df['urls'].apply(
         lambda x: len(eval(x))
     )

@@ -14,12 +14,12 @@ logger = logging.getLogger(__name__)
 
 def graph_analysis(train, dev):
     """ This tests 8 parameters and graphs over accuracy """
-    train = remove_col(train, 'id')
-    dev = remove_col(dev, 'id')
+    train = remove_col(remove_col(train, 'fromUser.id'), 'id')
+    dev = remove_col(remove_col(dev, 'fromUser.id'), 'id')
     train_frac = dev.sample(frac=0.05)
     dev_frac = dev.sample(frac=0.05)
-    x_train, y_train = x_y(train_frac, 'readBy', 'readBy')
-    x_dev, y_dev = x_y(dev_frac, 'readyBy', 'readBy')
+    x_train, y_train = x_y(train_frac, 'readBy')
+    x_dev, y_dev = x_y(dev_frac, 'readBy')
 
     if ask_question('test max_depth? [Y or N]: '):
         plot_data_1 = []
@@ -54,7 +54,7 @@ def graph_analysis(train, dev):
             test_score = mean_squared_error(y_dev, model.predict(x_dev))
 
             plot_data_2.append({'min samples split': i, 'mean square error':
-                                train_score, 'predict type': 'trainning'})
+                                train_score, 'predict type': 'training'})
             plot_data_2.append({'min samples split': i, 'mean square error':
                                 test_score, 'predict type': 'testing'})
 
@@ -77,7 +77,7 @@ def graph_analysis(train, dev):
             test_score = mean_squared_error(y_dev, model.predict(x_dev))
 
             plot_data_3.append({'min sample leaf': i, 'mean square error':
-                                train_score, 'predict type': 'trainning'})
+                                train_score, 'predict type': 'training'})
             plot_data_3.append({'min sample leaf': i, 'mean square error':
                                 test_score, 'predict type': 'testing'})
 
@@ -100,7 +100,7 @@ def graph_analysis(train, dev):
             test_score = mean_squared_error(y_dev, model.predict(x_dev))
 
             plot_data_4.append({'min weight fraction leaf': i, 'mean square error':  # noqa
-                                train_score, 'predict type': 'trainning'})
+                                train_score, 'predict type': 'training'})
             plot_data_4.append({'min weight fraction leaf': i, 'mean square error':  # noqa
                                 test_score, 'predict type': 'testing'})
 
@@ -123,7 +123,7 @@ def graph_analysis(train, dev):
             test_score = mean_squared_error(y_dev, model.predict(x_dev))
 
             plot_data_5.append({'max features': i, 'mean square error':
-                                train_score, 'predict type': 'trainning'})
+                                train_score, 'predict type': 'training'})
             plot_data_5.append({'max features': i, 'mean square error': test_score,  # noqa
                                 'predict type': 'testing'})
 
@@ -145,7 +145,7 @@ def graph_analysis(train, dev):
             test_score = mean_squared_error(y_dev, model.predict(x_dev))
 
             plot_data_6.append({'max leaf nodes': i, 'mean square error':
-                                train_score, 'predict type': 'trainning'})
+                                train_score, 'predict type': 'training'})
             plot_data_6.append({'max leaf nodes': i, 'mean square error':
                                 test_score, 'predict type': 'testing'})
 
@@ -168,7 +168,7 @@ def graph_analysis(train, dev):
             test_score = mean_squared_error(y_dev, model.predict(x_dev))
 
             plot_data_7.append({'min impurity decrease': i, 'mean square error':  # noqa
-                                train_score, 'predict type': 'trainning'})
+                                train_score, 'predict type': 'training'})
             plot_data_7.append({'min impurity decrease': i, 'mean square error':  # noqa
                                 test_score, 'predict type': 'testing'})
 
@@ -179,29 +179,6 @@ def graph_analysis(train, dev):
         sns.relplot(kind='line', x='min impurity decrease', y='mean square error',  # noqa
                     hue='predict type', data=plot_data_7)
         plt.savefig('graphs/min_inpurity_decrease.png')
-
-    if ask_question('test min_impurity_split? [Y or N]: '):
-        plot_data_8 = []
-        for i in range(1, 100):
-            i = i / 100
-            model = DecisionTreeRegressor(min_impurity_split=i)
-            model.fit(x_train, y_train)
-
-            train_score = mean_squared_error(y_train, model.predict(x_train))
-            test_score = mean_squared_error(y_dev, model.predict(x_dev))
-
-            plot_data_8.append({'min impurity split': i, 'mean square error':
-                                train_score, 'predict type': 'trainning'})
-            plot_data_8.append({'min impurity split': i, 'mean square error':
-                                test_score, 'predict type': 'testing'})
-
-        plot_data_8 = pd.DataFrame(plot_data_8)
-        test_data = plot_data_8[plot_data_8['predict type'] == 'testing']
-        print(plot_data_8.loc[test_data['mean square error'].idxmin()])
-
-        sns.relplot(kind='line', x='min impurity split', y='mean square error',
-                    hue='predict type', data=plot_data_8)
-        plt.savefig('graphs/min_impurity_split.png')
 
 
 def depth(x_train, y_train, x_dev, y_dev, x_test, y_test):
@@ -431,59 +408,28 @@ def impurity_decrease(x_train, y_train, x_dev, y_dev, x_test, y_test):
     print(f'test mse: {test_score}')
 
 
-def impurity_split(x_train, y_train, x_dev, y_dev, x_test, y_test):
-    """ isolated impurity split tests """
-    min_mse = None
-    min_model = None
-    min_depth = 0
-
-    for i in range(1, 100, 10):
-        model = DecisionTreeRegressor(min_impurity_split=i)
-        model.fit(x_train, y_train)
-
-        train_predict = model.predict(x_train)
-        dev_predict = model.predict(x_dev)
-        train_score = mean_squared_error(y_train, train_predict)
-        dev_score = mean_squared_error(y_dev, dev_predict)
-
-        print({'max depth': i,
-               'mse train': train_score,
-               'mse test': dev_score})
-
-        if min_mse is None or dev_score < min_mse:
-            min_mse = dev_score
-            min_depth = i
-            min_model = model
-
-    print(f'dev mse: {min_mse}')
-    print(f'min_impurity_split: {min_depth}')
-
-    test_score = mean_squared_error(y_test, min_model.predict(x_test))
-    print(f'test mse: {test_score}')
-
-
 def isolated_test(train, dev, test):
     """ isolated tests """
     logger.info('focused test 4')
-    train = remove_col(train, id)
-    dev = remove_col(dev, id)
-    test = remove_col(test, id)
+    train = remove_col(remove_col(train, 'fromUser.id'), 'id')
+    dev = remove_col(remove_col(dev, 'fromUser.id'), 'id')
+    test = remove_col(remove_col(test, 'fromUser.id'), 'id')
 
     x_train, y_train = x_y(train, 'readBy')
     x_dev, y_dev = x_y(dev, 'readBy')
     x_test, y_test = x_y(test, 'readBy')
 
     depth(x_train, y_train, x_dev, y_dev, x_test, y_test)
-    # leaf_nodes(x_train, y_train, x_dev, y_dev, x_test, y_test)
-    # impurity_decrease(x_train, y_train, x_dev, y_dev, x_test, y_test)
+    leaf_nodes(x_train, y_train, x_dev, y_dev, x_test, y_test)
+    impurity_decrease(x_train, y_train, x_dev, y_dev, x_test, y_test)
 
 
 def focused_test(train, dev, test):
     """ focused tests """
     logger.info('focused test 5')
-    train = remove_col(train, id)
-    dev = remove_col(dev, id)
-    test = remove_col(test, id)
+    train = remove_col(remove_col(train, 'fromUser.id'), 'id')
+    dev = remove_col(remove_col(dev, 'fromUser.id'), 'id')
+    test = remove_col(remove_col(test, 'fromUser.id'), 'id')
 
     x_train, y_train = x_y(train, 'readBy')
     x_dev, y_dev = x_y(dev, 'readBy')

@@ -1,4 +1,4 @@
-from .utils import unpickle, remove_col
+from .utils import unpickle
 
 from textblob import TextBlob
 import pandas as pd
@@ -21,31 +21,31 @@ def transform(df, col):
 
 
 def polarity(df):
-    return df['textblobs_clean'].apply(lambda x: x.sentiment.polarity)
+    return df['textblobs'].apply(lambda x: x.sentiment.polarity)
 
 
 def subjectivity(df):
-    return df['textblobs_clean'].apply(lambda x: x.sentiment.subjectivity)
+    return df['textblobs'].apply(lambda x: x.sentiment.subjectivity)
 
 
 def word_count(df):
-    return df['text'].str.count(r'\w')  # counting words
+    return df['text_clean'].str.count(r'\w')  # counting words
 
 
 def avg_word_length(df):
-    return df['text'].str.replace(' ', '').str.len() / df['wordCount']
+    return df['text_clean'].str.replace(' ', '').str.len() / df['wordCount']
 
 
 def adj_ratio(df):
-    return df['textblobs'].str.count(ADJS) / df['wordCount']
+    return df['tags'].str.count(ADJS) / df['wordCount']
 
 
 def verb_ratio(df):
-    return df['textblobs'].str.count(VERBS) / df['wordCount']
+    return df['tags'].str.count(VERBS) / df['wordCount']
 
 
 def noun_ratio(df):
-    return df['textblobs'].str.count(NOUNS) / df['wordCount']
+    return df['tags'].str.count(NOUNS) / df['wordCount']
 
 
 def mentions(df):
@@ -83,11 +83,11 @@ def get_features(data):
     # working with strings instead of objects is much faster for pandas
     # Here, i make a string with tags seperated with spaces
     # This allows me to use regex counting methods which are vectorized (spd!)
-    features['textblobs'] = transform(features, 'text').apply(
+    logger.info('  textblobs for text processing')
+    features['textblobs'] = transform(features, 'text_clean')
+    features['tags'] = features['textblobs'].apply(
         lambda blob: ' '.join([x[1] for x in blob.tags])  # getting only tags
     )
-    logger.info('  textblobs for clean text')
-    features['textblobs_clean'] = transform(features, 'text_clean')
 
     logger.info('calculating polarity and subjectivity')
     # sentiment features
@@ -95,8 +95,6 @@ def get_features(data):
     features['polarity'] = polarity(features)
     logger.info('  subjectivity')
     features['subjectivity'] = subjectivity(features)
-
-    features = remove_col(features, 'text_clean')  # trying to reduce memory
 
     logger.info('calculating word count')
     features['wordCount'] = word_count(features)
@@ -128,12 +126,9 @@ def get_features(data):
 
     logger.info('done!')
 
-    features = remove_col(features, 'text')
-    features = remove_col(features, 'text_clean')
-    features = remove_col(features, 'textblobs')
-    features = remove_col(features, 'textblobs_clean')
+    blacklist = ['text', 'textblobs', 'tags', 'mentions', 'urls', 'text_clean']
 
-    return features
+    return features.drop(blacklist, axis=1)  # drops columns
 
 
 if __name__ == '__main__':
