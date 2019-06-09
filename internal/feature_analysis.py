@@ -80,70 +80,136 @@ def get_bot_data(active_rank, data):
     return bottom_5_df_mean
 
 
-def plot_top_excalamation_count(data):
-    """ Plots various ratios about top and bottom users """
+def plot_top_mention_count(data):
+    """ Plots various ratios/scores about top and bottom users """
     plt.figure(1, figsize=(20, 20))
+    sns.catplot(x='fromUser.id', y='mentionsCount', hue='readBy_predict',
+                data=data, kind="bar", legend_out=True)
+    plt.ylim(0, 12.0)
+    plt.xticks(rotation=-10)
+    plt.title("top user's mention count graph")
+    plt.savefig('graphs/top_5_mention_count.png')
+
+
+def plot_bot_mention_count(data):
+    """ Plots various ratios/scores about top and bottom users """
+    plt.figure(2, figsize=(20, 20))
+    sns.catplot(x='fromUser.id', y='mentionsCount', hue='readBy_predict',
+                data=data, kind="bar", legend_out=True)
+    plt.ylim(0, 12.0)
+    plt.xticks(rotation=-10)
+    plt.title("bottom user's mention count graph")
+    plt.savefig('graphs/bottom_5_mention_count.png')
+
+
+def plot_top_excalamation_count(data):
+    """ Plots various ratios/scores about top and bottom users """
+    plt.figure(1)
     sns.catplot(x='fromUser.id', y='exclamationCount', hue='readBy_predict',
                 data=data, kind="bar", legend_out=True)
-    plt.ylim(0, 2.0)
-    plt.xticks(rotation=-15)
+    plt.ylim(0, 6.0)
+    plt.xticks(rotation=-10)
     plt.title("top user's excalamation count graph")
     plt.savefig('graphs/top_5_excalamation_count.png')
 
 
 def plot_bot_exclamation_count(data):
-    """ Plots various ratios about top and bottom users """
-    plt.figure(2, figsize=(20, 20))
+    """ Plots various ratios/scores about top and bottom users """
+    plt.figure(2)
     sns.catplot(x='fromUser.id', y='exclamationCount', hue='readBy_predict',
                 data=data, kind="bar", legend_out=True)
-    plt.ylim(0, 2.0)
-    plt.xticks(rotation=-15)
+    plt.ylim(0, 6.0)
+    plt.xticks(rotation=-10)
     plt.title("bottom user's excalamation count graph")
     plt.savefig('graphs/bottom_5_excalamation_count.png')
 
 
-def plot_top_noun_ratio(data):
+def plot_top_polarity(data):
+    """ Plots various ratios/scores about top and bottom users """
+    plt.figure(5)
+    sns.catplot(x='fromUser.id', y='polarity', hue='readBy_predict',
+                data=data, kind="bar", legend_out=True)
+    plt.xticks(rotation=-10)
+    plt.ylim(-1.0, 1.0)
+    plt.title("top user's polarity graph")
+    plt.savefig('graphs/top_5_polarity.png')
+
+
+def plot_bot_polarity(data):
     """ Plots various ratios about top and bottom users """
+    plt.figure(6)
+    sns.catplot(x='fromUser.id', y='polarity', hue='readBy_predict',
+                data=data, kind="bar", legend_out=True)
+    plt.xticks(rotation=-10)
+    plt.ylim(-1.0, 1.0)
+    plt.title("bottom user's polarity graph")
+    plt.savefig('graphs/bottom_5_polarity.png')
+
+
+def plot_top_word_count(data):
+    """ Plots various ratios/scores about top and bottom users """
+    plt.figure(5)
+    sns.catplot(x='fromUser.id', y='wordCount', hue='readBy_predict',
+                data=data, kind="bar", legend_out=True)
+    plt.xticks(rotation=-10)
+    plt.ylim(0, 3000.0)
+    plt.title("top user's word count graph")
+    plt.savefig('graphs/top_5_word_count.png')
+
+
+def plot_bot_word_count(data):
+    """ Plots various ratios/scores about top and bottom users """
+    plt.figure(6)
+    sns.catplot(x='fromUser.id', y='wordCount', hue='readBy_predict',
+                data=data, kind="bar", legend_out=True)
+    plt.xticks(rotation=-10)
+    plt.ylim(0, 3000.0)
+    plt.title("bottom user's word count graph")
+    plt.savefig('graphs/bottom_5_word_count.png')
+
+
+def plot_top_noun_ratio(data):
+    """ Plots various ratios/scores about top and bottom users """
     plt.figure(3)
     sns.catplot(x='fromUser.id', y='nounRatio', hue='readBy_predict',
                 data=data, kind="bar", legend_out=True)
-    plt.ylim(0, 2.5)
-    plt.xticks(rotation=-15)
+    plt.ylim(0, 0.3)
+    plt.xticks(rotation=-10)
     plt.title("top user's noun ratio graph")
     plt.savefig('graphs/top_5_noun_ratio.png')
 
 
 def plot_bot_noun_ratio(data):
-    """ Plots various ratios about top and bottom users """
+    """ Plots various ratios/scores about top and bottom users """
     plt.figure(4)
     sns.catplot(x='fromUser.id', y='nounRatio', hue='readBy_predict',
                 data=data, kind="bar", legend_out=True)
-    plt.ylim(0, 2.0)
-    plt.xticks(rotation=-15)
+    plt.ylim(0, 0.3)
+    plt.xticks(rotation=-10)
     plt.title("bottom user's noun ratio graph")
     plt.savefig('graphs/bottom_5_noun_ratio.png')
 
 
-def plot_top_urls_count(data):
-    """ Plots various ratios about top and bottom users """
+def plot_top_subjectivity(data):
+    """ Plots various ratios/scores about top and bottom users """
     plt.figure(5)
-    sns.catplot(x='fromUser.id', y='urlsCount', hue='readBy_predict',
+    sns.catplot(x='fromUser.id', y='subjectivity', hue='readBy_predict',
                 data=data, kind="bar", legend_out=True)
-    plt.xticks(rotation=-15)
-    plt.ylim(0, 1.5)
-    plt.title("top user's urls count graph")
-    plt.savefig('graphs/top_5_urls_count.png')
+    plt.xticks(rotation=-10)
+    plt.ylim(-1.0, 1.0)
+    plt.title("top user's subjectivity graph")
+    plt.savefig('graphs/top_5_subjectivity.png')
 
 
-def plot_bot_urls_count(data):
-    """ Plots various ratios about top and bottom users """
+def plot_bot_subjectivity(data):
+    """ Plots various ratios/scores about top and bottom users """
     plt.figure(6)
-    sns.catplot(x='fromUser.id', y='urlsCount', hue='readBy_predict',
+    sns.catplot(x='fromUser.id', y='subjectivity', hue='readBy_predict',
                 data=data, kind="bar", legend_out=True)
-    plt.xticks(rotation=-15)
-    plt.ylim(0, 1.5)
-    plt.title("bottom user's urls count graph")
-    plt.savefig('graphs/bottom_5_urls_count.png')
+    plt.xticks(rotation=-10)
+    plt.ylim(-1.0, 1.0)
+    plt.title("bottom user's subjectivity graph")
+    plt.savefig('graphs/bottom_5_subjectivity.png')
 
 
 def main():
@@ -154,15 +220,24 @@ def main():
     bot_data = get_bot_data(rank, data)
     sns.set(rc={'figure.figsize': (12, 12)})
     # breakpoint()
+    if ask_question('plot mention count? [Y or N]: '):
+        plot_top_mention_count(top_data)
+        plot_bot_mention_count(bot_data)
     if ask_question('plot excalmation count? [Y or N]: '):
         plot_top_excalamation_count(top_data)
         plot_bot_exclamation_count(bot_data)
+    if ask_question('plot  polarity? [Y or N]: '):
+        plot_top_polarity(top_data)
+        plot_bot_polarity(bot_data)
+    if ask_question('plot word count? [Y or N]: '):
+        plot_top_word_count(top_data)
+        plot_bot_word_count(bot_data)
     if ask_question('plot noun ratio? [Y or N]: '):
         plot_top_noun_ratio(top_data)
         plot_bot_noun_ratio(bot_data)
-    if ask_question('plot urls count? [Y or N]: '):
-        plot_top_urls_count(top_data)
-        plot_bot_urls_count(bot_data)
+    if ask_question('plot subjectivity? [Y or N]: '):
+        plot_top_subjectivity(top_data)
+        plot_bot_subjectivity(bot_data)
 
 
 if __name__ == '__main__':

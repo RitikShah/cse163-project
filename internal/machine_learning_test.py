@@ -35,18 +35,18 @@ def graph_analysis(train, dev):
             train_score = mean_squared_error(y_train, model.predict(x_train))
             test_score = mean_squared_error(y_dev, model.predict(x_dev))
 
-            plot_data_1.append({'min samples split': i, 'mean square error':
+            plot_data_1.append({'max_depth': i, 'mean square error':
                                 train_score, 'predict type': 'trainning'})
-            plot_data_1.append({'min samples split': i, 'mean square error':
+            plot_data_1.append({'max_depth': i, 'mean square error':
                                 test_score, 'predict type': 'testing'})
 
         plot_data_1 = pd.DataFrame(plot_data_1)
         test_data = plot_data_1[plot_data_1['predict type'] == 'testing']
         print(plot_data_1.loc[test_data['mean square error'].idxmin()])
 
-        sns.relplot(kind='line', x='min samples split', y='mean square error',
+        sns.relplot(kind='line', x='max_depth', y='mean square error',
                     hue='predict type', data=plot_data_1)
-        plt.savefig('graphs/min_samples_split.png')
+        plt.savefig('graphs/max_depth.png')
 
     if ask_question('test min_samples_split? [Y or N]: '):
         plot_data_2 = []
@@ -104,17 +104,20 @@ def graph_analysis(train, dev):
             train_score = mean_squared_error(y_train, model.predict(x_train))
             test_score = mean_squared_error(y_dev, model.predict(x_dev))
 
-            plot_data_4.append({'min weight fraction leaf': i, 'mean square error':  # noqa
-                                train_score, 'predict type': 'training'})
-            plot_data_4.append({'min weight fraction leaf': i, 'mean square error':  # noqa
-                                test_score, 'predict type': 'testing'})
+            plot_data_4.append({'min weight fraction leaf': i,
+                                'mean square error': train_score,
+                                'predict type': 'training'})
+            plot_data_4.append({'min weight fraction leaf': i,
+                                'mean square error': test_score,
+                                'predict type': 'testing'})
 
         plot_data_4 = pd.DataFrame(plot_data_4)
         test_data = plot_data_4[plot_data_4['predict type'] == 'testing']
         print(plot_data_4.loc[test_data['mean square error'].idxmin()])
 
         sns.relplot(kind='line', x='min weight fraction leaf',
-                    y='mean square error', hue='predict type', data=plot_data_4)  # noqa
+                    y='mean square error', hue='predict type',
+                    data=plot_data_4)
         plt.savefig('graphs/min_weight_fraction_leaf.png')
 
     if ask_question('test max_features? [Y or N]: '):
@@ -129,8 +132,8 @@ def graph_analysis(train, dev):
 
             plot_data_5.append({'max features': i, 'mean square error':
                                 train_score, 'predict type': 'training'})
-            plot_data_5.append({'max features': i, 'mean square error': test_score,  # noqa
-                                'predict type': 'testing'})
+            plot_data_5.append({'max features': i, 'mean square error':
+                                test_score, 'predict type': 'testing'})
 
         plot_data_5 = pd.DataFrame(plot_data_5)
         test_data = plot_data_5[plot_data_5['predict type'] == 'testing']
@@ -172,17 +175,20 @@ def graph_analysis(train, dev):
             train_score = mean_squared_error(y_train, model.predict(x_train))
             test_score = mean_squared_error(y_dev, model.predict(x_dev))
 
-            plot_data_7.append({'min impurity decrease': i, 'mean square error':  # noqa
-                                train_score, 'predict type': 'training'})
-            plot_data_7.append({'min impurity decrease': i, 'mean square error':  # noqa
-                                test_score, 'predict type': 'testing'})
+            plot_data_7.append({'min impurity decrease': i,
+                                'mean square error': train_score,
+                                'predict type': 'training'})
+            plot_data_7.append({'min impurity decrease': i,
+                                'mean square error': test_score,
+                                'predict type': 'testing'})
 
         plot_data_7 = pd.DataFrame(plot_data_7)
         test_data = plot_data_7[plot_data_7['predict type'] == 'testing']
         print(plot_data_7.loc[test_data['mean square error'].idxmin()])
 
-        sns.relplot(kind='line', x='min impurity decrease', y='mean square error',  # noqa
-                    hue='predict type', data=plot_data_7)
+        sns.relplot(kind='line', x='min impurity decrease',
+                    y='mean square error', hue='predict type',
+                    data=plot_data_7)
         plt.savefig('graphs/min_inpurity_decrease.png')
 
 
