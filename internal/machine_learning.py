@@ -1,3 +1,7 @@
+# =============================================================================
+# Constructs a machine learning model trained on the featured data
+# =============================================================================
+
 from .utils import remove_col, x_y
 from .split import get_train, get_test
 
@@ -17,7 +21,7 @@ DEPTH = 6
 # SAMPLES_LEAF = 0.02
 # WEIGHT_FRACTION_LEAF = 0.02
 LEAF_NODES = 31
-# IMPURITY_DECREASE = 0.03
+IMPURITY_DECREASE = 0.03
 # FEATURES = 0
 
 
@@ -58,6 +62,7 @@ def ml(train, test, num):
     model = DecisionTreeRegressor(
         max_depth=DEPTH,
         max_leaf_nodes=LEAF_NODES,
+        min_impurity_decrease=IMPURITY_DECREASE
     )
 
     logger.info('fitting model')

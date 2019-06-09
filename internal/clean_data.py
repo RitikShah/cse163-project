@@ -1,3 +1,7 @@
+# =============================================================================
+# Reads in the data and cleans it only retaining relevant columns
+# =============================================================================
+
 from .utils import remove_col
 
 from random import random

@@ -1,3 +1,8 @@
+# =============================================================================
+# Performs a series of tests to help determine the hyperparamters for machine
+#   learning
+# =============================================================================
+
 from .utils import remove_col, x_y, ask_question
 from .split import get_train, get_dev, get_test
 

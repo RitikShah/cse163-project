@@ -1,3 +1,8 @@
+# =============================================================================
+# Performs textual analysis converting the text into numerical columns
+# =============================================================================
+
+
 from .utils import unpickle
 
 from textblob import TextBlob

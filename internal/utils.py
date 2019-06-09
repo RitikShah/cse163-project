@@ -1,3 +1,7 @@
+# =============================================================================
+# Provides a list of helpful functions used throughout the program
+# =============================================================================
+
 from pathlib import Path
 import pandas as pd
 import logging
