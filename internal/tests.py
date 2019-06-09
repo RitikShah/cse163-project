@@ -14,6 +14,7 @@ CLEANED_PKL = 'pickles/cleaned.pkl'
 
 
 def assert_equals(expected, recieved):
+    """ Compares expected and recieved: throws a message if not equal """
     try:
         assert(expected == recieved)
         return True
@@ -23,9 +24,7 @@ def assert_equals(expected, recieved):
 
 
 def test_cleaned_data():
-    """
-    Testing the cleaning of data
-    """
+    """ Testing the cleaning of data """
     print('* Testing the cleaning of data')
     passed = 0
 
@@ -49,9 +48,7 @@ def test_cleaned_data():
 
 
 def test_features(data):
-    """
-    Testing the features of data
-    """
+    """ Testing the features of data """
     print('* Testing the text processing of features')
     passed = 0
 
@@ -109,6 +106,7 @@ def test_features(data):
 
 
 def playground():
+    """ Throws you into a interpreter loop with data loaded in """
     import pandas as pd  # noqa
     data = unpickle(FEATURED_PKL)  # noqa
     logger.info('entering breakpoint')
@@ -118,9 +116,7 @@ def playground():
 
 
 def main():
-    """
-    Running the entire suite of tests
-    """
+    """ Running the entire suite of tests """
     print('* *** Running all tests *** *')
     print()
     data = test_cleaned_data()

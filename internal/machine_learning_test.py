@@ -456,7 +456,7 @@ def focused_test(train, dev, test):
 def main():
     """ runs suite. these methods were ran then tweaked and ran again """
     graph_analysis(get_train(), get_dev())
-    # isolated_test(get_train(), get_dev(), get_test())
+    isolated_test(get_train(), get_dev(), get_test())
     focused_test(get_train(), get_dev(), get_test())
 
 
