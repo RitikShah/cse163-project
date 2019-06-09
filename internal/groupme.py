@@ -1,3 +1,7 @@
+# =============================================================================
+# Takes in the groupme raw data, cleans, features, and serializes it
+# =============================================================================
+
 from .clean_data import clean_sentence
 from .features import get_features
 from .utils import remove_col

@@ -1,3 +1,7 @@
+# =============================================================================
+# Contains the strings used in the command line interface
+# =============================================================================
+
 INTRO = (
     '\n'
     'Analyzing Message Popularity in Group Chats\n'

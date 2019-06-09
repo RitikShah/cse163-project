@@ -1,3 +1,8 @@
+# =============================================================================
+# Performs feature analysis by created several graphs analyzing the most
+#   popular features determined by the machine learning model
+# =============================================================================
+
 from .utils import remove_col, x_y, ask_question, unpickle
 from .machine_learning import DEPTH, LEAF_NODES
 from .split import split

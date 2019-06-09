@@ -1,3 +1,7 @@
+# =============================================================================
+# Provides a test suite to validate the program
+# =============================================================================
+
 from .features import get_features
 from .clean_data import clean
 from .utils import unpickle

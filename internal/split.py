@@ -1,3 +1,7 @@
+# =============================================================================
+# Splits the featured data into three sets and pickles them for further use
+# =============================================================================
+
 from .utils import unpickle
 
 import pandas as pd
